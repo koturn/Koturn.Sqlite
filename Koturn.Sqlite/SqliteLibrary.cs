@@ -27,24 +27,6 @@ namespace Koturn.Sqlite
         public delegate int BusyCallbackFunc(IntPtr arg, int invokeCount);
 
         /// <summary>
-        /// Delegate for <see cref="NativeMethods.LibVersion"/> or <see cref="NativeMethods.LibVersionW"/>.
-        /// </summary>
-        /// <returns>A pointer to the version string constant.</returns>
-        private delegate IntPtr LibVersionFunc();
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.LibSourceId"/> or <see cref="NativeMethods.LibSourceIdW"/>.
-        /// </summary>
-        /// <returns>A pointer to the source ID constant which contains the date and time of the check-in (UTC) and a SHA1 or SHA3-256 hash of the entire source tree.</returns>
-        private delegate IntPtr LibSourceIdFunc();
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.LibVersionNumber"/> or <see cref="NativeMethods.LibVersionNumberW"/>.
-        /// </summary>
-        /// <returns>
-        /// An integer with a value (X * 1000000 + Y + 1000 + Z)
-        /// where X, Y and Z are the components of SQLite version number string, "X.Y.Z".
-        /// </returns>
-        private delegate int LibVersionNumberFunc();
-        /// <summary>
         /// Delegate for <see cref="NativeMethods.Open"/> or <see cref="NativeMethods.OpenW"/>.
         /// </summary>
         /// <param name="filePath">SQLite3 database file path.</param>
@@ -61,12 +43,6 @@ namespace Koturn.Sqlite
         /// <returns>Result code.</returns>
         private delegate SqliteResult OpenV2Func(IntPtr pFilePath, out SqliteHandle db, SqliteOpenFlags flags, IntPtr pVfs);
         /// <summary>
-        /// Delegate for <see cref="NativeMethods.Close"/> or <see cref="NativeMethods.CloseW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult CloseFunc(IntPtr db);
-        /// <summary>
         /// Delegate for <see cref="NativeMethods.Execute"/> or <see cref="NativeMethods.ExecuteW"/>.
         /// </summary>
         /// <param name="db">An open database.</param>
@@ -77,23 +53,6 @@ namespace Koturn.Sqlite
         /// <returns>Result code.</returns>
         private delegate SqliteResult ExecuteFunc(SqliteHandle db, string sql, ExecCallbackFunc callback, IntPtr callbackArg, out SqliteMemoryHandle errmsgHandle);
         /// <summary>
-        /// Delegate for <see cref="NativeMethods.Free"/> or <see cref="NativeMethods.FreeW"/>.
-        /// </summary>
-        /// <param name="pMemory">Allocated memory pointer.</param>
-        private delegate void FreeFunc(IntPtr pMemory);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.GetErrorMessage"/> or <see cref="NativeMethods.GetErrorMessageW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>Pointer to latest error message (UTF-8).</returns>
-        private delegate IntPtr GetErrorMessageFunc(SqliteHandle db);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.GetErrorString"/> or <see cref="NativeMethods.GetErrorStringW"/>.
-        /// </summary>
-        /// <param name="result">Result code.</param>
-        /// <returns>Pointer to English-language text that describes the <see cref="SqliteResult"/> (UTF-8).</returns>
-        private delegate IntPtr GetErrorStringFunc(SqliteResult result);
-        /// <summary>
         /// Delegate for <see cref="NativeMethods.Prepare"/> or <see cref="NativeMethods.PrepareW"/>.
         /// </summary>
         /// <param name="db">An open database.</param>
@@ -103,280 +62,6 @@ namespace Koturn.Sqlite
         /// <param name="pSqlTail">Pointer to unused portion of <paramref name="pSql"/>.</param>
         /// <returns>Result code.</returns>
         private delegate SqliteResult PrepareFunc(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Sql"/> or <see cref="NativeMethods.SqlW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>A pointer to a copy of the UTF-8 SQL text used to create prepared statement.</returns>
-        private delegate IntPtr SqlFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ExpandedSql"/> or <see cref="NativeMethods.ExpandedSqlW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>Handle of a pointer to a UTF-8 string containing the SQL text of prepared statement with bound parameters expanded.</returns>
-        private delegate SqliteMemoryHandle ExpandedSqlFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.NormalizedSql"/> or <see cref="NativeMethods.NormalizedSqlW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>A pointer to a UTF-8 string containing the normalized SQL text of prepared statement.</returns>
-        private delegate IntPtr NormalizedSqlFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Step"/> or <see cref="NativeMethods.StepW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult StepFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Finalize"/> or <see cref="NativeMethods.FinalizeW"/>.
-        /// </summary>
-        /// <param name="pStmt">Statement handle.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult FinalizeFunc(IntPtr pStmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindParameterCount"/> or <see cref="NativeMethods.BindParameterCountW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>Number of SQL parameters.</returns>
-        private delegate int BindParameterCountFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindParameterName"/> or <see cref="NativeMethods.BindParameterNameW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <returns>Pointer to bind parameter name (UTF-8).</returns>
-        private delegate IntPtr BindParameterNameFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindParameterIndex"/> or <see cref="NativeMethods.BindParameterIndexW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="pName">Pointer to parameter name (UTF-8).</param>
-        /// <returns>Index of the parameter.</returns>
-        private delegate int BindParameterIndexFunc(SqliteStatementHandle stmt, IntPtr pName);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindInt"/> or <see cref="NativeMethods.BindIntW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="val">Value to bind.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindIntFunc(SqliteStatementHandle stmt, int index, int val);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindInt64"/> or <see cref="NativeMethods.BindInt64W"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="val">Value to bind.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindInt64Func(SqliteStatementHandle stmt, int index, long val);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindDouble"/> or <see cref="NativeMethods.BindDoubleW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="val">Value to bind.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindDoubleFunc(SqliteStatementHandle stmt, int index, double val);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindText"/> or <see cref="NativeMethods.BindTextW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="val">Value to bind.</param>
-        /// <param name="n">Max length of the string value, <paramref name="val"/>.</param>
-        /// <param name="callback">Callback of the special destructor.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindTextFunc(SqliteStatementHandle stmt, int index, string val, int n, IntPtr callback);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindBlob"/> or <see cref="NativeMethods.BindBlobW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="pBlob">Pointer to BLOB data to bind.</param>
-        /// <param name="n">Byte lenght of BLOB data, <paramref name="pBlob"/>.</param>
-        /// <param name="destructor">Callback of the special destructor.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindBlobFunc(SqliteStatementHandle stmt, int index, IntPtr pBlob, int n, IntPtr destructor);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindBlob64"/> or <see cref="NativeMethods.BindBlob64W"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="pBlob">Pointer to BLOB data to bind.</param>
-        /// <param name="n">Byte lenght of BLOB data, <paramref name="pBlob"/>.</param>
-        /// <param name="destructor">Callback of the special destructor.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindBlob64Func(SqliteStatementHandle stmt, int index, IntPtr pBlob, ulong n, IntPtr destructor);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindZeroBlob"/> or <see cref="NativeMethods.BindZeroBlobW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="n">Byte lenght of BLOB data which is filled with zeros.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindZeroBlobFunc(SqliteStatementHandle stmt, int index, int n);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindZeroBlob"/> or <see cref="NativeMethods.BindZeroBlob64W"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <param name="n">Byte lenght of BLOB data which is filled with zeros.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindZeroBlob64Func(SqliteStatementHandle stmt, int index, ulong n);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BindNull"/> or <see cref="NativeMethods.BindNullW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of parameter (1-based).</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BindNullFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Reset"/> or <see cref="NativeMethods.ResetW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult ResetFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnCount"/> or <see cref="NativeMethods.ColumnCountW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <returns>The number of columns in the result set.</returns>
-        private delegate int ColumnCountFunc(SqliteStatementHandle stmt);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnName"/> or <see cref="NativeMethods.ColumnNameW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Pointer to column name string (UTF-16).</returns>
-        private delegate IntPtr ColumnNameFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnValue"/> or <see cref="NativeMethods.ColumnValueW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Get pointer to result value object.</returns>
-        private delegate IntPtr ColumnValueFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnInt"/> or <see cref="NativeMethods.ColumnIntW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Column value as <see cref="int"/>.</returns>
-        private delegate int ColumnIntFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnInt64"/> or <see cref="NativeMethods.ColumnInt64W"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Column value as <see cref="long"/>.</returns>
-        private delegate long ColumnInt64Func(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnDouble"/> or <see cref="NativeMethods.ColumnDoubleW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Column value as <see cref="double"/>.</returns>
-        private delegate double ColumnDoubleFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnText"/> or <see cref="NativeMethods.ColumnTextW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Pointer to column value string (UTF-16).</returns>
-        private delegate IntPtr ColumnTextFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnBlob"/> or <see cref="NativeMethods.ColumnBlobW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Pointer to column value BLOB.</returns>
-        private delegate IntPtr ColumnBlobFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnBytes"/> or <see cref="NativeMethods.ColumnBytesW"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Size of a BLOB or a UTF-8 TEXT result in bytes.</returns>
-        private delegate int ColumnBytesFunc(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ColumnBytes16"/> or <see cref="NativeMethods.ColumnBytes16W"/>.
-        /// </summary>
-        /// <param name="stmt">Statement handle.</param>
-        /// <param name="index">Index of column (0-based).</param>
-        /// <returns>Size of a UTF-16 TEXT result in bytes.</returns>
-        private delegate int ColumnBytes16Func(SqliteStatementHandle stmt, int index);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueType"/> or <see cref="NativeMethods.ValueTypeW"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Enum value of type of result value.</returns>
-        private delegate SqliteValueType ValueTypeFunc(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueInt"/> or <see cref="NativeMethods.ValueIntW"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Column value as <see cref="int"/>.</returns>
-        private delegate int ValueIntFunc(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueInt64"/> or <see cref="NativeMethods.ValueInt64W"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Column value as <see cref="long"/>.</returns>
-        private delegate long ValueInt64Func(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueDouble"/> or <see cref="NativeMethods.ValueDoubleW"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Column value as <see cref="double"/>.</returns>
-        private delegate double ValueDoubleFunc(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueText"/> or <see cref="NativeMethods.ValueTextW"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Pointer to column value string (UTF-16).</returns>
-        private delegate IntPtr ValueTextFunc(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueBlob"/> or <see cref="NativeMethods.ValueBlobW"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Pointer to column value BLOB.</returns>
-        private delegate IntPtr ValueBlobFunc(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueBytes"/> or <see cref="NativeMethods.ValueBytesW"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Size of a BLOB or a UTF-8 TEXT result in bytes.</returns>
-        private delegate int ValueBytesFunc(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.ValueBytes16"/> or <see cref="NativeMethods.ValueBytes16W"/>.
-        /// </summary>
-        /// <param name="pColumnValue">Pointer to result value object.</param>
-        /// <returns>Size of a UTF-16 TEXT result in bytes.</returns>
-        private delegate int ValueBytes16Func(IntPtr pColumnValue);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Changes"/> or <see cref="NativeMethods.ChangesW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>The number of rows modified, inserted or deleted.</returns>
-        private delegate int ChangesFunc(SqliteHandle db);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Changes64"/> or <see cref="NativeMethods.Changes64W"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>The number of rows modified, inserted or deleted.</returns>
-        private delegate long Changes64Func(SqliteHandle db);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.TotalChanges"/> or <see cref="NativeMethods.TotalChangesW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>The total number of rows modified, inserted or deleted since the database connection was opened.</returns>
-        private delegate int TotalChangesFunc(SqliteHandle db);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.TotalChanges64"/> or <see cref="NativeMethods.TotalChanges64W"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>The total number of rows modified, inserted or deleted since the database connection was opened.</returns>
-        private delegate long TotalChanges64Func(SqliteHandle db);
         /// <summary>
         /// Delegate for <see cref="NativeMethods.BlobOpen"/> or <see cref="NativeMethods.BlobOpenW"/>.
         /// </summary>
@@ -389,94 +74,20 @@ namespace Koturn.Sqlite
         /// <param name="blobHandle">Output BLOB handle.</param>
         /// <returns>Result code.</returns>
         private delegate SqliteResult BlobOpenFunc(SqliteHandle db, IntPtr pDbName, IntPtr pTableName, IntPtr pColumnName, long rowId, SqliteOpenFlags flags, out SqliteBlobHandle blobHandle);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BlobReOpen"/> or <see cref="NativeMethods.BlobReOpenW"/>.
-        /// </summary>
-        /// <param name="blobHandle">A BLOB handle.</param>
-        /// <param name="rowId">New ROWID of BLOB.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BlobReOpenFunc(SqliteBlobHandle blobHandle, long rowId);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BlobClose"/> or <see cref="NativeMethods.BlobCloseW"/>.
-        /// </summary>
-        /// <param name="blobHandle">A BLOB handle to close.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BlobCloseFunc(IntPtr blobHandle);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BlobBytes"/> or <see cref="NativeMethods.BlobBytesW"/>.
-        /// </summary>
-        /// <param name="blobHandle">A BLOB handle.</param>
-        /// <returns>The size of an open BLOB..</returns>
-        private delegate int BlobBytesFunc(SqliteBlobHandle blobHandle);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BlobRead"/> or <see cref="NativeMethods.BlobReadW"/>.
-        /// </summary>
-        /// <param name="blobHandle">A BLOB handle.</param>
-        /// <param name="pData">Pointer to buffer to read.</param>
-        /// <param name="count">Data size to copy in bytes.</param>
-        /// <param name="blobOffset">Offset of BLOB.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BlobReadFunc(SqliteBlobHandle blobHandle, IntPtr pData, int count, int blobOffset);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BlobWrite"/> or <see cref="NativeMethods.BlobWriteW"/>.
-        /// </summary>
-        /// <param name="blobHandle">A BLOB handle.</param>
-        /// <param name="pData">Pointer to buffer to write.</param>
-        /// <param name="count">Data size to copy in bytes.</param>
-        /// <param name="blobOffset">Offset of BLOB.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BlobWriteFunc(SqliteBlobHandle blobHandle, IntPtr pData, int count, int blobOffset);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.Interrupt"/> or <see cref="NativeMethods.InterruptW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        private delegate void InterruptAction(SqliteHandle db);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.IsInterrupted"/> or <see cref="NativeMethods.IsInterruptedW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <returns>True if an interrupt is currently in effect, or false otherwise.</returns>
-        private delegate bool IsInterruptedFunc(SqliteHandle db);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BusyTimeout"/> or <see cref="NativeMethods.BusyTimeoutW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <param name="ms">Sleep time in milliseconds.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BusyTimeoutFunc(SqliteHandle db, int ms);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.BusyHandler"/> or <see cref="NativeMethods.BusyHandlerW"/>.
-        /// </summary>
-        /// <param name="db">SQLite db handle.</param>
-        /// <param name="callback">Callback function.</param>
-        /// <param name="callbackArg">First argument to callback.</param>
-        /// <returns>Result code.</returns>
-        private delegate SqliteResult BusyHandlerFunc(SqliteHandle db, BusyCallbackFunc callback, IntPtr callbackArg);
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.MemoryUsed"/> or <see cref="NativeMethods.MemoryUsedW"/>.
-        /// </summary>
-        /// <returns>The number of bytes of memory currentry outstanding (malloced but not freed).</returns>
-        private delegate long MemoryUsedFunc();
-        /// <summary>
-        /// Delegate for <see cref="NativeMethods.MemoryHighWater"/> or <see cref="NativeMethods.MemoryHighWaterW"/>.
-        /// </summary>
-        /// <param name="resetFlag">True to reset high-water mark to the current value of <see cref="NativeMethods.MemoryUsed"/>.</param>
-        /// <returns>The maximum value of <see cref="NativeMethods.MemoryUsed"/> since the high-water mark was last reset.</returns>
-        private delegate long MemoryHighWaterFunc(bool resetFlag);
 
 
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.LibVersion"/> or <see cref="NativeMethods.LibVersionW"/>.
         /// </summary>
-        private static readonly LibVersionFunc _libVersion;
+        private static readonly Func<IntPtr> _libVersion;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.LibSourceId"/> or <see cref="NativeMethods.LibSourceIdW"/>.
         /// </summary>
-        private static readonly LibSourceIdFunc _libSourceId;
+        private static readonly Func<IntPtr> _libSourceId;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.LibVersionNumber"/> or <see cref="NativeMethods.LibVersionNumberW"/>.
         /// </summary>
-        private static readonly LibVersionNumberFunc _libVersionNumber;
+        private static readonly Func<int> _libVersionNumber;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Open"/> or <see cref="NativeMethods.OpenW"/>.
         /// </summary>
@@ -488,7 +99,7 @@ namespace Koturn.Sqlite
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Close"/> or <see cref="NativeMethods.CloseW"/>.
         /// </summary>
-        private static readonly CloseFunc _close;
+        private static readonly Func<IntPtr, SqliteResult> _close;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Execute"/> or <see cref="NativeMethods.ExecuteW"/>.
         /// </summary>
@@ -496,15 +107,15 @@ namespace Koturn.Sqlite
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Free"/> or <see cref="NativeMethods.FreeW"/>.
         /// </summary>
-        private static readonly FreeFunc _free;
+        private static readonly Action<IntPtr> _free;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.GetErrorMessage"/> or <see cref="NativeMethods.GetErrorMessageW"/>.
         /// </summary>
-        private static readonly GetErrorMessageFunc _getErrorMessage;
+        private static readonly Func<SqliteHandle, IntPtr> _getErrorMessage;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.GetErrorString"/> or <see cref="NativeMethods.GetErrorStringW"/>.
         /// </summary>
-        private static readonly GetErrorStringFunc _getErrorString;
+        private static readonly Func<SqliteResult, IntPtr> _getErrorString;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Prepare"/> or <see cref="NativeMethods.PrepareW"/>.
         /// </summary>
@@ -512,163 +123,163 @@ namespace Koturn.Sqlite
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Sql"/> or <see cref="NativeMethods.SqlW"/>.
         /// </summary>
-        private static readonly SqlFunc _sql;
+        private static readonly Func<SqliteStatementHandle, IntPtr> _sql;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ExpandedSql"/> or <see cref="NativeMethods.ExpandedSqlW"/>.
         /// </summary>
-        private static readonly ExpandedSqlFunc _expandedSql;
+        private static readonly Func<SqliteStatementHandle, SqliteMemoryHandle> _expandedSql;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.NormalizedSql"/> or <see cref="NativeMethods.NormalizedSqlW"/>.
         /// </summary>
-        private static readonly NormalizedSqlFunc _normalizedSql;
+        private static readonly Func<SqliteStatementHandle, IntPtr> _normalizedSql;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Step"/> or <see cref="NativeMethods.StepW"/>.
         /// </summary>
-        private static readonly StepFunc _step;
+        private static readonly Func<SqliteStatementHandle, SqliteResult> _step;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Finalize"/> or <see cref="NativeMethods.FinalizeW"/>.
         /// </summary>
-        private static readonly FinalizeFunc _finalize;
+        private static readonly Func<IntPtr, SqliteResult> _finalize;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindParameterCount"/> or <see cref="NativeMethods.BindParameterCountW"/>.
         /// </summary>
-        private static readonly BindParameterCountFunc _bindParameterCount;
+        private static readonly Func<SqliteStatementHandle, int> _bindParameterCount;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindParameterName"/> or <see cref="NativeMethods.BindParameterNameW"/>.
         /// </summary>
-        private static readonly BindParameterNameFunc _bindParameterName;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr> _bindParameterName;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindParameterIndex"/> or <see cref="NativeMethods.BindParameterIndexW"/>.
         /// </summary>
-        private static readonly BindParameterIndexFunc _bindParameterIndex;
+        private static readonly Func<SqliteStatementHandle, IntPtr, int> _bindParameterIndex;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindInt"/> or <see cref="NativeMethods.BindIntW"/>.
         /// </summary>
-        private static readonly BindIntFunc _bindInt;
+        private static readonly Func<SqliteStatementHandle, int, int, SqliteResult> _bindInt;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindInt64"/> or <see cref="NativeMethods.BindInt64W"/>.
         /// </summary>
-        private static readonly BindInt64Func _bindInt64;
+        private static readonly Func<SqliteStatementHandle, int, long, SqliteResult> _bindInt64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindDouble"/> or <see cref="NativeMethods.BindDoubleW"/>.
         /// </summary>
-        private static readonly BindDoubleFunc _bindDouble;
+        private static readonly Func<SqliteStatementHandle, int, double, SqliteResult> _bindDouble;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindText"/> or <see cref="NativeMethods.BindTextW"/>.
         /// </summary>
-        private static readonly BindTextFunc _bindText;
+        private static readonly Func<SqliteStatementHandle, int, string, int, IntPtr, SqliteResult> _bindText;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindBlob"/> or <see cref="NativeMethods.BindBlobW"/>.
         /// </summary>
-        private static readonly BindBlobFunc _bindBlob;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr, int, IntPtr, SqliteResult> _bindBlob;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindBlob64"/> or <see cref="NativeMethods.BindBlob64W"/>.
         /// </summary>
-        private static readonly BindBlob64Func _bindBlob64;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr, ulong, IntPtr, SqliteResult> _bindBlob64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindZeroBlob"/> or <see cref="NativeMethods.BindZeroBlobW"/>.
         /// </summary>
-        private static readonly BindZeroBlobFunc _bindZeroBlob;
+        private static readonly Func<SqliteStatementHandle, int, int, SqliteResult> _bindZeroBlob;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindZeroBlob"/> or <see cref="NativeMethods.BindZeroBlob64W"/>.
         /// </summary>
-        private static readonly BindZeroBlob64Func _bindZeroBlob64;
+        private static readonly Func<SqliteStatementHandle, int, ulong, SqliteResult> _bindZeroBlob64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BindNull"/> or <see cref="NativeMethods.BindNullW"/>.
         /// </summary>
-        private static readonly BindNullFunc _bindNull;
+        private static readonly Func<SqliteStatementHandle, int, SqliteResult> _bindNull;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Reset"/> or <see cref="NativeMethods.ResetW"/>.
         /// </summary>
-        private static readonly ResetFunc _reset;
+        private static readonly Func<SqliteStatementHandle, SqliteResult> _reset;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnCount"/> or <see cref="NativeMethods.ColumnCountW"/>.
         /// </summary>
-        private static readonly ColumnCountFunc _columnCount;
+        private static readonly Func<SqliteStatementHandle, int> _columnCount;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnName"/> or <see cref="NativeMethods.ColumnNameW"/>.
         /// </summary>
-        private static readonly ColumnNameFunc _columnName;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr> _columnName;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnValue"/> or <see cref="NativeMethods.ColumnValueW"/>.
         /// </summary>
-        private static readonly ColumnValueFunc _columnValue;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr> _columnValue;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnInt"/> or <see cref="NativeMethods.ColumnIntW"/>.
         /// </summary>
-        private static readonly ColumnIntFunc _columnInt;
+        private static readonly Func<SqliteStatementHandle, int, int> _columnInt;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnInt64"/> or <see cref="NativeMethods.ColumnInt64W"/>.
         /// </summary>
-        private static readonly ColumnInt64Func _columnInt64;
+        private static readonly Func<SqliteStatementHandle, int, long> _columnInt64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnDouble"/> or <see cref="NativeMethods.ColumnDoubleW"/>.
         /// </summary>
-        private static readonly ColumnDoubleFunc _columnDouble;
+        private static readonly Func<SqliteStatementHandle, int, double> _columnDouble;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnText"/> or <see cref="NativeMethods.ColumnTextW"/>.
         /// </summary>
-        private static readonly ColumnTextFunc _columnText;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr> _columnText;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnBlob"/> or <see cref="NativeMethods.ColumnBlobW"/>.
         /// </summary>
-        private static readonly ColumnBlobFunc _columnBlob;
+        private static readonly Func<SqliteStatementHandle, int, IntPtr> _columnBlob;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnBytes"/> or <see cref="NativeMethods.ColumnBytesW"/>.
         /// </summary>
-        private static readonly ColumnBytesFunc _columnBytes;
+        private static readonly Func<SqliteStatementHandle, int, int> _columnBytes;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ColumnBytes16"/> or <see cref="NativeMethods.ColumnBytes16W"/>.
         /// </summary>
-        private static readonly ColumnBytes16Func _columnBytes16;
+        private static readonly Func<SqliteStatementHandle, int, int> _columnBytes16;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueType"/> or <see cref="NativeMethods.ValueTypeW"/>.
         /// </summary>
-        private static readonly ValueTypeFunc _valueType;
+        private static readonly Func<IntPtr, SqliteValueType> _valueType;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueInt"/> or <see cref="NativeMethods.ValueIntW"/>.
         /// </summary>
-        private static readonly ValueIntFunc _valueInt;
+        private static readonly Func<IntPtr, int> _valueInt;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueInt64"/> or <see cref="NativeMethods.ValueInt64W"/>.
         /// </summary>
-        private static readonly ValueInt64Func _valueInt64;
+        private static readonly Func<IntPtr, long> _valueInt64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueDouble"/> or <see cref="NativeMethods.ValueDoubleW"/>.
         /// </summary>
-        private static readonly ValueDoubleFunc _valueDouble;
+        private static readonly Func<IntPtr, double> _valueDouble;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueText"/> or <see cref="NativeMethods.ValueTextW"/>.
         /// </summary>
-        private static readonly ValueTextFunc _valueText;
+        private static readonly Func<IntPtr, IntPtr> _valueText;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueBlob"/> or <see cref="NativeMethods.ValueBlobW"/>.
         /// </summary>
-        private static readonly ValueBlobFunc _valueBlob;
+        private static readonly Func<IntPtr, IntPtr> _valueBlob;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueBytes"/> or <see cref="NativeMethods.ValueBytesW"/>.
         /// </summary>
-        private static readonly ValueBytesFunc _valueBytes;
+        private static readonly Func<IntPtr, int> _valueBytes;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.ValueBytes16"/> or <see cref="NativeMethods.ValueBytes16W"/>.
         /// </summary>
-        private static readonly ValueBytes16Func _valueBytes16;
+        private static readonly Func<IntPtr, int> _valueBytes16;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Changes"/> or <see cref="NativeMethods.ChangesW"/>.
         /// </summary>
-        private static readonly ChangesFunc _changes;
+        private static readonly Func<SqliteHandle, int> _changes;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Changes64"/> or <see cref="NativeMethods.Changes64W"/>.
         /// </summary>
-        private static readonly Changes64Func _changes64;
+        private static readonly Func<SqliteHandle, long> _changes64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.TotalChanges"/> or <see cref="NativeMethods.TotalChangesW"/>.
         /// </summary>
-        private static readonly TotalChangesFunc _totalChanges;
+        private static readonly Func<SqliteHandle, int> _totalChanges;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.TotalChanges64"/> or <see cref="NativeMethods.TotalChanges64W"/>.
         /// </summary>
-        private static readonly TotalChanges64Func _totalChanges64;
+        private static readonly Func<SqliteHandle, long> _totalChanges64;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BlobOpen"/> or <see cref="NativeMethods.BlobOpenW"/>.
         /// </summary>
@@ -676,47 +287,47 @@ namespace Koturn.Sqlite
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BlobReOpen"/> or <see cref="NativeMethods.BlobReOpenW"/>.
         /// </summary>
-        private static readonly BlobReOpenFunc _blobReOpen;
+        private static readonly Func<SqliteBlobHandle, long, SqliteResult> _blobReOpen;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BlobClose"/> or <see cref="NativeMethods.BlobCloseW"/>.
         /// </summary>
-        private static readonly BlobCloseFunc _blobClose;
+        private static readonly Func<IntPtr, SqliteResult> _blobClose;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BlobBytes"/> or <see cref="NativeMethods.BlobBytesW"/>.
         /// </summary>
-        private static readonly BlobBytesFunc _blobBytes;
+        private static readonly Func<SqliteBlobHandle, int> _blobBytes;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BlobRead"/> or <see cref="NativeMethods.BlobReadW"/>.
         /// </summary>
-        private static readonly BlobReadFunc _blobRead;
+        private static readonly Func<SqliteBlobHandle, IntPtr, int, int, SqliteResult> _blobRead;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BlobWrite"/> or <see cref="NativeMethods.BlobWriteW"/>.
         /// </summary>
-        private static readonly BlobWriteFunc _blobWrite;
+        private static readonly Func<SqliteBlobHandle, IntPtr, int, int, SqliteResult> _blobWrite;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Interrupt"/> or <see cref="NativeMethods.InterruptW"/>.
         /// </summary>
-        private static readonly InterruptAction _interrupt;
+        private static readonly Action<SqliteHandle> _interrupt;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.IsInterrupted"/> or <see cref="NativeMethods.IsInterruptedW"/>.
         /// </summary>
-        private static readonly IsInterruptedFunc _isInterrupted;
+        private static readonly Func<SqliteHandle, bool> _isInterrupted;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BusyTimeout"/> or <see cref="NativeMethods.BusyTimeoutW"/>.
         /// </summary>
-        private static readonly BusyTimeoutFunc _busyTimeout;
+        private static readonly Func<SqliteHandle, int, SqliteResult> _busyTimeout;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.BusyHandler"/> or <see cref="NativeMethods.BusyHandlerW"/>.
         /// </summary>
-        private static readonly BusyHandlerFunc _busyHandler;
+        private static readonly Func<SqliteHandle, BusyCallbackFunc, IntPtr, SqliteResult> _busyHandler;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.MemoryUsed"/> or <see cref="NativeMethods.MemoryUsedW"/>.
         /// </summary>
-        private static readonly MemoryUsedFunc _memoryUsed;
+        private static readonly Func<long> _memoryUsed;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.MemoryHighWater"/> or <see cref="NativeMethods.MemoryHighWaterW"/>.
         /// </summary>
-        private static readonly MemoryHighWaterFunc _memoryHighWater;
+        private static readonly Func<bool, long> _memoryHighWater;
 
 
         /// <summary>
