@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koturn.Sqlite", "Koturn.Sqlite\Koturn.Sqlite.csproj", "{3E7EF400-82F1-467E-9189-AB8473FC5825}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Koturn.Sqlite", "Koturn.Sqlite\Koturn.Sqlite.csproj", "{3E7EF400-82F1-467E-9189-AB8473FC5825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Koturn.Sqlite.Tests", "Koturn.Sqlite.Tests\Koturn.Sqlite.Tests.csproj", "{669E0CBE-4579-49CA-949A-84C255B2B804}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3E7EF400-82F1-467E-9189-AB8473FC5825}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E7EF400-82F1-467E-9189-AB8473FC5825}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E7EF400-82F1-467E-9189-AB8473FC5825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{669E0CBE-4579-49CA-949A-84C255B2B804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{669E0CBE-4579-49CA-949A-84C255B2B804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{669E0CBE-4579-49CA-949A-84C255B2B804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{669E0CBE-4579-49CA-949A-84C255B2B804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
