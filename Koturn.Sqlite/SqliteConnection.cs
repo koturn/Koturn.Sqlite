@@ -135,10 +135,11 @@ namespace Koturn.Sqlite
 
 
         /// <summary>
-        /// Create SQLite3 connection and open SQLite3 database file.
+        /// Create SQLite3 connection and open SQLite3 database on memory.
         /// </summary>
         public SqliteConnection()
         {
+            Open(null);
         }
 
         /// <summary>
