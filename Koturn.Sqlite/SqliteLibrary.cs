@@ -1470,7 +1470,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/libversion.html"/></para>
             /// <para><seealso href="https://www.sqlite.org/c3ref/c_source_id.html"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_libversion", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_libversion", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr LibVersion();
 
             /// <summary>
@@ -1481,7 +1481,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/libversion.html"/></para>
             /// <para><seealso href="https://www.sqlite.org/c3ref/c_source_id.html"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_sourceid", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_sourceid", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr LibSourceId();
 
             /// <summary>
@@ -1495,7 +1495,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/libversion.html"/></para>
             /// <para><seealso href="https://www.sqlite.org/c3ref/c_source_id.html"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_libversion_number", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_libversion_number", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int LibVersionNumber();
 
             /// <summary>
@@ -1507,7 +1507,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/open.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_open16", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_open16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
             public static extern SqliteResult Open(string filePath, out SqliteHandle db);
 
             /// <summary>
@@ -1521,7 +1521,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/open.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_open_v2", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_open_v2", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult OpenV2(IntPtr pFilePath, out SqliteHandle db, SqliteOpenFlags flags, IntPtr pVfs);
 
             /// <summary>
@@ -1532,7 +1532,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/close.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_close", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_close", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Close(IntPtr db);
 
             /// <summary>
@@ -1547,7 +1547,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/exec.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_exec", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_exec", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Execute(SqliteHandle db, string sql, ExecCallbackFunc callback, IntPtr callbackArg, out SqliteMemoryHandle errmgHandle);
 
             /// <summary>
@@ -1557,7 +1557,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/free.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_free", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_free", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern void Free(IntPtr pMemory);
 
             /// <summary>
@@ -1572,7 +1572,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/prepare.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_prepare", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_prepare", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Prepare(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
 
             /// <summary>
@@ -1583,7 +1583,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/expanded_sql.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_sql", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_sql", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr Sql(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1594,7 +1594,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/expanded_sql.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_expanded_sql", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_expanded_sql", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteMemoryHandle ExpandedSql(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1605,7 +1605,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/expanded_sql.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_normalized_sql", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_normalized_sql", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr NormalizedSql(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1616,7 +1616,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/step.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_step", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_step", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Step(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1627,7 +1627,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/finalize.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_finalize", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_finalize", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Finalize(IntPtr pStmt);
 
             /// <summary>
@@ -1638,7 +1638,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_parameter_count.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_parameter_count", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_parameter_count", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int BindParameterCount(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1650,7 +1650,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_parameter_name.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_parameter_name", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_parameter_name", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr BindParameterName(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1662,7 +1662,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_parameter_index.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_parameter_index", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_parameter_index", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int BindParameterIndex(SqliteStatementHandle stmt, IntPtr pName);
 
             /// <summary>
@@ -1675,7 +1675,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_int", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_int", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindInt(SqliteStatementHandle stmt, int index, int val);
 
             /// <summary>
@@ -1688,7 +1688,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_int64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_int64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindInt64(SqliteStatementHandle stmt, int index, long val);
 
             /// <summary>
@@ -1701,7 +1701,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_double", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_double", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindDouble(SqliteStatementHandle stmt, int index, double val);
 
             /// <summary>
@@ -1716,7 +1716,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_text16", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_text16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
             public static extern SqliteResult BindText(SqliteStatementHandle stmt, int index, string val, int n, IntPtr callback);
 
             /// <summary>
@@ -1731,7 +1731,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_blob", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_blob", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindBlob(SqliteStatementHandle stmt, int index, IntPtr pBlob, int n, IntPtr destructor);
 
             /// <summary>
@@ -1746,7 +1746,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_blob64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_blob64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindBlob64(SqliteStatementHandle stmt, int index, IntPtr pBlob, ulong n, IntPtr destructor);
 
             /// <summary>
@@ -1759,7 +1759,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_zeroblob", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_zeroblob", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindZeroBlob(SqliteStatementHandle stmt, int index, int n);
 
             /// <summary>
@@ -1772,7 +1772,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_zeroblob64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_zeroblob64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindZeroBlob64(SqliteStatementHandle stmt, int index, ulong n);
 
             /// <summary>
@@ -1784,7 +1784,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_null", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_bind_null", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BindNull(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1795,7 +1795,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/reset.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_reset", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_reset", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Reset(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1806,7 +1806,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_count.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_count", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_count", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ColumnCount(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -1818,7 +1818,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_name.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_name16", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_name16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr ColumnName(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1830,7 +1830,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_value", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_value", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr ColumnValue(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1842,7 +1842,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_int", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_int", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ColumnInt(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1854,7 +1854,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_int64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_int64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern long ColumnInt64(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1866,7 +1866,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_double", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_double", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern double ColumnDouble(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1878,7 +1878,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_text16", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_text16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr ColumnText(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1890,7 +1890,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_blob", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_blob", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr ColumnBlob(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1903,7 +1903,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ColumnBlob"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_bytes", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_bytes", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ColumnBytes(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1916,7 +1916,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ColumnText"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_column_bytes16", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_column_bytes16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ColumnBytes16(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -1927,7 +1927,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_type", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_type", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteValueType ValueType(IntPtr pColumnValue);
 
             /// <summary>
@@ -1938,7 +1938,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_int", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_int", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ValueInt(IntPtr pColumnValue);
 
             /// <summary>
@@ -1949,7 +1949,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_int64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_int64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern long ValueInt64(IntPtr pColumnValue);
 
             /// <summary>
@@ -1960,7 +1960,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_double", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_double", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern double ValueDouble(IntPtr pColumnValue);
 
             /// <summary>
@@ -1971,7 +1971,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_text16", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_text16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr ValueText(IntPtr pColumnValue);
 
             /// <summary>
@@ -1982,7 +1982,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_blob", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_blob", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr ValueBlob(IntPtr pColumnValue);
 
             /// <summary>
@@ -1994,7 +1994,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ValueBlob"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_bytes", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_bytes", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ValueBytes(IntPtr pColumnValue);
 
             /// <summary>
@@ -2006,7 +2006,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ValueText"/></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_value_bytes16", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_value_bytes16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int ValueBytes16(IntPtr pColumnValue);
 
             /// <summary>
@@ -2017,7 +2017,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/changes.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_changes", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_changes", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int Changes(SqliteHandle db);
 
             /// <summary>
@@ -2029,7 +2029,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/changes.html"/></para>
             /// <para>sqlite3_changes64 is available version 3.37.0 or later.</para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_changes64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_changes64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern long Changes64(SqliteHandle db);
 
             /// <summary>
@@ -2040,7 +2040,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/total_changes.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_total_changes", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_total_changes", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int TotalChanges(SqliteHandle db);
 
             /// <summary>
@@ -2051,7 +2051,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/total_changes.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_total_changes64", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_total_changes64", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern long TotalChanges64(SqliteHandle db);
 
             /// <summary>
@@ -2081,7 +2081,7 @@ namespace Koturn.Sqlite
             /// </list>
             /// </para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_open", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_open", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BlobOpen(SqliteHandle db, IntPtr pDbName, IntPtr pTableName, IntPtr pColumnName, long rowId, SqliteOpenFlags flags, out SqliteBlobHandle blobHandle);
 
             /// <summary>
@@ -2093,7 +2093,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_reopen.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_reopen", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_reopen", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BlobReOpen(SqliteBlobHandle blobHandle, long rowId);
 
             /// <summary>
@@ -2104,7 +2104,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_close.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_close", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_close", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BlobClose(IntPtr blobHandle);
 
             /// <summary>
@@ -2115,7 +2115,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_bytes.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_bytes", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_bytes", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern int BlobBytes(SqliteBlobHandle blobHandle);
 
             /// <summary>
@@ -2129,7 +2129,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_read.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_read", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_read", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BlobRead(SqliteBlobHandle blobHandle, IntPtr pData, int count, int blobOffset);
 
             /// <summary>
@@ -2143,7 +2143,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_write.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_write", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_blob_write", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BlobWrite(SqliteBlobHandle blobHandle, IntPtr pData, int count, int blobOffset);
 
             /// <summary>
@@ -2153,7 +2153,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/interrupt.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_interrupt", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_interrupt", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern void Interrupt(SqliteHandle db);
 
             /// <summary>
@@ -2164,7 +2164,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/interrupt.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_is_interrupted", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_is_interrupted", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern bool IsInterrupted(SqliteHandle db);
 
             /// <summary>
@@ -2176,7 +2176,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/busy_timeout.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_busy_timeout", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_busy_timeout", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BusyTimeout(SqliteHandle db, int ms);
 
             /// <summary>
@@ -2194,7 +2194,7 @@ namespace Koturn.Sqlite
             /// Any such actions result in undefined behavior.
             /// </para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_busy_handler", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_busy_handler", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult BusyHandler(SqliteHandle db, BusyCallbackFunc callback, IntPtr callbackArg);
 
             /// <summary>
@@ -2209,7 +2209,7 @@ namespace Koturn.Sqlite
             /// the returns value MUST NOT BE overwriten or freed with <see cref="Free"/>.
             /// </para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_errmsg16", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_errmsg16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr GetErrorMessage(SqliteHandle db);
 
             /// <summary>
@@ -2224,7 +2224,7 @@ namespace Koturn.Sqlite
             /// the returns value MUST NOT BE overwriten or freed with <see cref="Free"/>.
             /// </para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_errstr", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_errstr", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr GetErrorString(SqliteResult result);
 
             /// <summary>
@@ -2234,7 +2234,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/memory_highwater.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_memory_used", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_memory_used", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern long MemoryUsed();
 
             /// <summary>
@@ -2246,7 +2246,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/memory_highwater.html"/></para>
             /// <para>The value returned by <c>MemoryHighWater(ture) is the high-water mark prior to the reset.</c></para>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_memory_highwater", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_memory_highwater", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern long MemoryHighWater(bool resetFlag);
 #if !UNITY_EDITOR || UNITY_EDITOR_WIN
             /// <summary>
@@ -2257,7 +2257,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/libversion.html"/></para>
             /// <para><seealso href="https://www.sqlite.org/c3ref/c_source_id.html"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_libversion", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_libversion", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr LibVersionW();
 
             /// <summary>
@@ -2268,7 +2268,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/libversion.html"/></para>
             /// <para><seealso href="https://www.sqlite.org/c3ref/c_source_id.html"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_sourceid", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_sourceid", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr LibSourceIdW();
 
             /// <summary>
@@ -2282,7 +2282,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/libversion.html"/></para>
             /// <para><seealso href="https://www.sqlite.org/c3ref/c_source_id.html"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_libversion_number", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_libversion_number", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int LibVersionNumberW();
 
             /// <summary>
@@ -2294,7 +2294,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/open.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_open16", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_open16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
             public static extern SqliteResult OpenW(string filePath, out SqliteHandle db);
 
             /// <summary>
@@ -2308,7 +2308,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/open.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_open_v2", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_open_v2", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult OpenV2W(IntPtr pFilePath, out SqliteHandle db, SqliteOpenFlags flags, IntPtr pVfs);
 
             /// <summary>
@@ -2319,7 +2319,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/close.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_close", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_close", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult CloseW(IntPtr db);
 
             /// <summary>
@@ -2334,7 +2334,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/exec.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_exec", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_exec", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult ExecuteW(SqliteHandle db, string sql, ExecCallbackFunc callback, IntPtr callbackArg, out SqliteMemoryHandle errmsgHandle);
 
             /// <summary>
@@ -2344,7 +2344,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/free.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_free", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_free", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern void FreeW(IntPtr pMemory);
 
             /// <summary>
@@ -2359,7 +2359,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/prepare.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_prepare", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_prepare", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult PrepareW(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
 
             /// <summary>
@@ -2370,7 +2370,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/expanded_sql.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_sql", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_sql", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr SqlW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2384,7 +2384,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/expanded_sql.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_expanded_sql", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_expanded_sql", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteMemoryHandle ExpandedSqlW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2395,7 +2395,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/expanded_sql.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_normalized_sql", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_normalized_sql", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr NormalizedSqlW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2405,7 +2405,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/step.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_step", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_step", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult StepW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2416,7 +2416,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/finalize.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_finalize", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_finalize", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult FinalizeW(IntPtr pStmt);
 
             /// <summary>
@@ -2427,7 +2427,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_parameter_count.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_parameter_count", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_parameter_count", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int BindParameterCountW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2439,7 +2439,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_parameter_name.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_parameter_name", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_parameter_name", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr BindParameterNameW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2451,7 +2451,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_parameter_index.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_parameter_index", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_parameter_index", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int BindParameterIndexW(SqliteStatementHandle stmt, IntPtr pName);
 
             /// <summary>
@@ -2464,7 +2464,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_int", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_int", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindIntW(SqliteStatementHandle stmt, int index, int val);
 
             /// <summary>
@@ -2477,7 +2477,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_int64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_int64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindInt64W(SqliteStatementHandle stmt, int index, long val);
 
             /// <summary>
@@ -2490,7 +2490,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_double", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_double", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindDoubleW(SqliteStatementHandle stmt, int index, double val);
 
             /// <summary>
@@ -2505,7 +2505,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_text16", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_text16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
             public static extern SqliteResult BindTextW(SqliteStatementHandle stmt, int index, string val, int n, IntPtr callback);
 
             /// <summary>
@@ -2520,7 +2520,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_blob", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_blob", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindBlobW(SqliteStatementHandle stmt, int index, IntPtr pBlob, int n, IntPtr destructor);
 
             /// <summary>
@@ -2535,7 +2535,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_blob64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_blob64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindBlob64W(SqliteStatementHandle stmt, int index, IntPtr pBlob, ulong n, IntPtr destructor);
 
             /// <summary>
@@ -2548,7 +2548,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_zeroblob", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_zeroblob", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindZeroBlobW(SqliteStatementHandle stmt, int index, int n);
 
             /// <summary>
@@ -2561,7 +2561,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_zeroblob64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_zeroblob64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindZeroBlob64W(SqliteStatementHandle stmt, int index, ulong n);
 
             /// <summary>
@@ -2573,7 +2573,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_null", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_null", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BindNullW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2584,7 +2584,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/reset.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_reset", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_reset", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult ResetW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2595,7 +2595,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_count.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_count", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_count", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ColumnCountW(SqliteStatementHandle stmt);
 
             /// <summary>
@@ -2607,7 +2607,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_name.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_name16", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_name16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr ColumnNameW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2619,7 +2619,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_value", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_value", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr ColumnValueW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2631,7 +2631,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_int", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_int", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ColumnIntW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2643,7 +2643,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_int64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_int64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern long ColumnInt64W(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2655,7 +2655,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_double", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_double", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern double ColumnDoubleW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2667,7 +2667,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_text16", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_text16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr ColumnTextW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2679,7 +2679,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_blob", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_blob", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr ColumnBlobW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2692,7 +2692,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ColumnBlob"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_bytes", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_bytes", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ColumnBytesW(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2705,7 +2705,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ColumnText"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_bytes16", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_column_bytes16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ColumnBytes16W(SqliteStatementHandle stmt, int index);
 
             /// <summary>
@@ -2716,7 +2716,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_type", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_type", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteValueType ValueTypeW(IntPtr pColumnValue);
 
             /// <summary>
@@ -2727,7 +2727,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_int", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_int", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ValueIntW(IntPtr pColumnValue);
 
             /// <summary>
@@ -2738,7 +2738,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_int64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_int64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern long ValueInt64W(IntPtr pColumnValue);
 
             /// <summary>
@@ -2749,7 +2749,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_double", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_double", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern double ValueDoubleW(IntPtr pColumnValue);
 
             /// <summary>
@@ -2760,7 +2760,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_text16", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_text16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr ValueTextW(IntPtr pColumnValue);
 
             /// <summary>
@@ -2771,7 +2771,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/column_blob.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_blob", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_blob", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr ValueBlobW(IntPtr pColumnValue);
 
             /// <summary>
@@ -2783,7 +2783,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ValueBlob"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_bytes", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_bytes", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ValueBytesW(IntPtr pColumnValue);
 
             /// <summary>
@@ -2795,7 +2795,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/column_blob.html"/></para>
             /// <para><seealso cref="ValueText"/></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_bytes16", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_value_bytes16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ValueBytes16W(IntPtr pColumnValue);
 
             /// <summary>
@@ -2806,7 +2806,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/changes.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_changes", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_changes", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ChangesW(SqliteHandle db);
 
             /// <summary>
@@ -2817,7 +2817,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/changes.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_changes64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_changes64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern long Changes64W(SqliteHandle db);
 
             /// <summary>
@@ -2828,7 +2828,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/total_changes.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_total_changes", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_total_changes", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int TotalChangesW(SqliteHandle db);
 
             /// <summary>
@@ -2839,7 +2839,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/total_changes.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_total_changes64", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_total_changes64", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern long TotalChanges64W(SqliteHandle db);
 
             /// <summary>
@@ -2869,7 +2869,7 @@ namespace Koturn.Sqlite
             /// </list>
             /// </para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_open", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_open", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BlobOpenW(SqliteHandle db, IntPtr pDbName, IntPtr pTableName, IntPtr pColumnName, long rowId, SqliteOpenFlags flags, out SqliteBlobHandle blobHandle);
 
             /// <summary>
@@ -2881,7 +2881,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_reopen.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_reopen", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_reopen", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BlobReOpenW(SqliteBlobHandle blobHandle, long rowId);
 
             /// <summary>
@@ -2892,7 +2892,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_close.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_close", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_close", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BlobCloseW(IntPtr blobHandle);
 
             /// <summary>
@@ -2903,7 +2903,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_bytes.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_bytes", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_bytes", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int BlobBytesW(SqliteBlobHandle blobHandle);
 
             /// <summary>
@@ -2917,7 +2917,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_read.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_read", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_read", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BlobReadW(SqliteBlobHandle blobHandle, IntPtr pData, int count, int blobOffset);
 
             /// <summary>
@@ -2931,7 +2931,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/blob_write.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_write", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_blob_write", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BlobWriteW(SqliteBlobHandle blobHandle, IntPtr pData, int count, int blobOffset);
 
             /// <summary>
@@ -2941,7 +2941,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/interrupt.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_interrupt", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_interrupt", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern void InterruptW(SqliteHandle db);
 
             /// <summary>
@@ -2952,7 +2952,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/interrupt.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_is_interrupted", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_is_interrupted", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern bool IsInterruptedW(SqliteHandle db);
 
             /// <summary>
@@ -2963,7 +2963,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/busy_timeout.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_busy_timeout", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_busy_timeout", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BusyTimeoutW(SqliteHandle db, int ms);
 
             /// <summary>
@@ -2980,7 +2980,7 @@ namespace Koturn.Sqlite
             /// Any such actions result in undefined behavior.
             /// </para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_busy_handler", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_busy_handler", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult BusyHandlerW(SqliteHandle db, BusyCallbackFunc callback, IntPtr callbackArg);
 
             /// <summary>
@@ -2995,7 +2995,7 @@ namespace Koturn.Sqlite
             /// the returns value MUST NOT BE overwriten or freed with <see cref="Free"/>.
             /// </para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_errmsg16", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_errmsg16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr GetErrorMessageW(SqliteHandle db);
 
             /// <summary>
@@ -3010,7 +3010,7 @@ namespace Koturn.Sqlite
             /// the returns value MUST NOT BE overwriten or freed with <see cref="Free"/>.
             /// </para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_errstr", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_errstr", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern IntPtr GetErrorStringW(SqliteResult result);
 
             /// <summary>
@@ -3020,7 +3020,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/memory_highwater.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_memory_used", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_memory_used", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern long MemoryUsedW();
 
             /// <summary>
@@ -3032,7 +3032,7 @@ namespace Koturn.Sqlite
             /// <para><seealso href="https://www.sqlite.org/c3ref/memory_highwater.html"/></para>
             /// <para>The value returned by <c>MemoryHighWater(ture) is the high-water mark prior to the reset.</c></para>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_memory_highwater", CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_memory_highwater", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern long MemoryHighWaterW(bool resetFlag);
 #endif
         }
