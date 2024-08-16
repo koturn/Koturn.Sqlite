@@ -1,461 +1,313 @@
 namespace Koturn.Sqlite
 {
-    /// <summary>
-    /// Wrapper of <see cref="SqliteStatement"/> to get column values.
-    /// </summary>
-    public class SqliteColumnAccessor
+    public interface ISqliteColumnAccessable
     {
-        /// <summary>
-        /// Statement handle.
-        /// </summary>
-        private readonly SqliteStatement _stmt;
-
-        /// <summary>
-        /// Create accessor with specified statement handle.
-        /// </summary>
-        public SqliteColumnAccessor(SqliteStatement stmt)
-        {
-            _stmt = stmt;
-        }
-
         /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int GetIntUnchecked(int index)
-        {
-            return _stmt.GetIntUnchecked(index);
-        }
+        int GetIntUnchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="index">Index of column.</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int GetInt(int index)
-        {
-            return _stmt.GetInt(index);
-        }
+        int GetInt(int index);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int GetInt(string name)
-        {
-            return _stmt.GetInt(name);
-        }
+        int GetInt(string name);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="int"/> if column value is not NULL, otherwise null.</returns>
-        public int? GetNullableIntUnchecked(int index)
-        {
-            return _stmt.GetNullableIntUnchecked(index);
-        }
+        int? GetNullableIntUnchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="int"/> if column value is not NULL, otherwise null.</returns>
-        public int? GetNullableInt(int index)
-        {
-            return _stmt.GetNullableInt(index);
-        }
+        int? GetNullableInt(int index);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="int"/> if column value is not NULL, otherwise null.</returns>
-        public int? GetNullableInt(string name)
-        {
-            return _stmt.GetNullableInt(name);
-        }
+        int? GetNullableInt(string name);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int GetIntStrict(int index)
-        {
-            return _stmt.GetIntStrict(index);
-        }
+        int GetIntStrict(int index);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int GetIntStrict(string name)
-        {
-            return _stmt.GetIntStrict(name);
-        }
+        int GetIntStrict(string name);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int? GetNullableIntStrict(int index)
-        {
-            return _stmt.GetNullableIntStrict(index);
-        }
+        int? GetNullableIntStrict(int index);
 
         /// <summary>
         /// Get result value as <see cref="int"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="int"/>.</returns>
-        public int? GetNullableIntStrict(string name)
-        {
-            return _stmt.GetNullableIntStrict(name);
-        }
+        int? GetNullableIntStrict(string name);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long GetInt64Unchecked(int index)
-        {
-            return _stmt.GetInt64Unchecked(index);
-        }
+        long GetInt64Unchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long GetInt64(int index)
-        {
-            return _stmt.GetInt64(index);
-        }
+        long GetInt64(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long GetInt64(string name)
-        {
-            return _stmt.GetInt64(name);
-        }
+        long GetInt64(string name);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="long"/> if column value is not NULL, otherwise null.</returns>
-        public long? GetNullableInt64Unchecked(int index)
-        {
-            return _stmt.GetNullableInt64Unchecked(index);
-        }
+        long? GetNullableInt64Unchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="long"/> if column value is not NULL, otherwise null.</returns>
-        public long? GetNullableInt64(int index)
-        {
-            return _stmt.GetNullableInt64(index);
-        }
+        long? GetNullableInt64(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="long"/> if column value is not NULL, otherwise null.</returns>
-        public long? GetNullableInt64(string name)
-        {
-            return _stmt.GetNullableInt64(name);
-        }
+        long? GetNullableInt64(string name);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double GetDoubleUnchecked(int index)
-        {
-            return _stmt.GetDoubleUnchecked(index);
-        }
+        double GetDoubleUnchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long GetInt64Strict(int index)
-        {
-            return _stmt.GetInt64Strict(index);
-        }
+        long GetInt64Strict(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long GetInt64Strict(string name)
-        {
-            return _stmt.GetInt64Strict(name);
-        }
+        long GetInt64Strict(string name);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long? GetNullableInt64Strict(int index)
-        {
-            return _stmt.GetNullableInt64Strict(index);
-        }
+        long? GetNullableInt64Strict(int index);
 
         /// <summary>
         /// Get result value as <see cref="long"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="long"/>.</returns>
-        public long? GetNullableInt64Strict(string name)
-        {
-            return _stmt.GetNullableInt64Strict(name);
-        }
+        long? GetNullableInt64Strict(string name);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double GetDouble(int index)
-        {
-            return _stmt.GetDouble(index);
-        }
+        double GetDouble(int index);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double GetDouble(string name)
-        {
-            return _stmt.GetDouble(name);
-        }
+        double GetDouble(string name);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="double"/> if column value is not NULL, otherwise null.</returns>
-        public double? GetNullableDoubleUnchecked(int index)
-        {
-            return _stmt.GetNullableDoubleUnchecked(index);
-        }
+        double? GetNullableDoubleUnchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="double"/> if column value is not NULL, otherwise null.</returns>
-        public double? GetNullableDouble(int index)
-        {
-            return _stmt.GetNullableDouble(index);
-        }
+        double? GetNullableDouble(int index);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="double"/> if column value is not NULL, otherwise null.</returns>
-        public double? GetNullableDouble(string name)
-        {
-            return _stmt.GetNullableDouble(name);
-        }
+        double? GetNullableDouble(string name);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double GetDoubleStrict(int index)
-        {
-            return _stmt.GetDoubleStrict(index);
-        }
+        double GetDoubleStrict(int index);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double GetDoubleStrict(string name)
-        {
-            return _stmt.GetDoubleStrict(name);
-        }
+        double GetDoubleStrict(string name);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double? GetNullableDoubleStrict(int index)
-        {
-            return _stmt.GetNullableDoubleStrict(index);
-        }
+        double? GetNullableDoubleStrict(int index);
 
         /// <summary>
         /// Get result value as <see cref="double"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="double"/>.</returns>
-        public double? GetNullableDoubleStrict(string name)
-        {
-            return _stmt.GetNullableDoubleStrict(name);
-        }
+        double? GetNullableDoubleStrict(string name);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="string"/> if column value is not NULL, otherwise null.</returns>
-        public string GetTextUnchecked(int index)
-        {
-            return _stmt.GetTextUnchecked(index);
-        }
+        string GetTextUnchecked(int index);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="string"/> if column value is not NULL, otherwise null.</returns>
-        public string GetText(int index)
-        {
-            return _stmt.GetText(index);
-        }
+        string GetText(int index);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query.
         /// </summary>
         /// <param name="name">Name of column (0-based).</param>
         /// <returns>Column value as <see cref="string"/> if column value is not NULL, otherwise null.</returns>
-        public string GetText(string name)
-        {
-            return _stmt.GetText(name);
-        }
+        string GetText(string name);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="string"/>.</returns>
-        public string GetTextStrict(int index)
-        {
-            return _stmt.GetTextStrict(index);
-        }
+        string GetTextStrict(int index);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="string"/>.</returns>
-        public string GetTextStrict(string name)
-        {
-            return _stmt.GetTextStrict(name);
-        }
+        string GetTextStrict(string name);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="string"/>.</returns>
-        public string GetNullableTextStrict(int index)
-        {
-            return _stmt.GetNullableTextStrict(index);
-        }
+        string GetNullableTextStrict(int index);
 
         /// <summary>
         /// Get result value as <see cref="string"/> from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="string"/>.</returns>
-        public string GetNullableTextStrict(string name)
-        {
-            return _stmt.GetNullableTextStrict(name);
-        }
+        string GetNullableTextStrict(string name);
 
         /// <summary>
         /// Get result value as BLOB from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB if column value is not NULL or has non-zero length, otherwise null.</returns>
-        public byte[] GetBlobUnchecked(int index)
-        {
-            return _stmt.GetBlobUnchecked(index);
-        }
+        byte[] GetBlobUnchecked(int index);
 
         /// <summary>
         /// Get result value as BLOB from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB if column value is not NULL or has non-zero length, otherwise null.</returns>
-        public byte[] GetBlob(int index)
-        {
-            return _stmt.GetBlob(index);
-        }
+        byte[] GetBlob(int index);
 
         /// <summary>
         /// Get result value as BLOB from a query.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB if column value is not NULL or has non-zero length, otherwise null.</returns>
-        public byte[] GetBlob(string name)
-        {
-            return _stmt.GetBlob(name);
-        }
+        byte[] GetBlob(string name);
 
         /// <summary>
         /// Get result value as BLOB from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB.</returns>
-        public byte[] GetBlobStrict(int index)
-        {
-            return _stmt.GetBlobStrict(index);
-        }
+        byte[] GetBlobStrict(int index);
 
         /// <summary>
         /// Get result value as BLOB from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB.</returns>
-        public byte[] GetBlobStrict(string name)
-        {
-            return _stmt.GetBlobStrict(name);
-        }
+        byte[] GetBlobStrict(string name);
 
         /// <summary>
         /// Get result value as BLOB from a query with strict type checking.
         /// </summary>
         /// <param name="index">Index of column (0-based).</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB.</returns>
-        public byte[] GetNullableBlobStrict(int index)
-        {
-            return _stmt.GetNullableBlobStrict(index);
-        }
+        byte[] GetNullableBlobStrict(int index);
 
         /// <summary>
         /// Get result value as BLOB from a query with strict type checking.
         /// </summary>
         /// <param name="name">Name of column.</param>
         /// <returns>Column value as <see cref="byte"/> array of BLOB.</returns>
-        public byte[] GetNullableBlobStrict(string name)
-        {
-            return _stmt.GetNullableBlobStrict(name);
-        }
+        byte[] GetNullableBlobStrict(string name);
     }
 }

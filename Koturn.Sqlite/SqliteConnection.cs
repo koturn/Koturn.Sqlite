@@ -319,11 +319,11 @@ namespace Koturn.Sqlite
         /// </summary>
         /// <param name="sql">SQL to be evaluated.</param>
         /// <param name="callback">Callback function.</param>
-        public void ExecuteSingle(string sql, Func<SqliteColumnAccessor, bool> callback)
+        public void ExecuteSingle(string sql, Func<ISqliteColumnAccessable, bool> callback)
         {
             using (var stmt = Prepare(sql))
             {
-                var accessor = new SqliteColumnAccessor(stmt);
+                var accessor = (ISqliteColumnAccessable)stmt;
                 while (stmt.Step() && callback(accessor))
                 {
                 }

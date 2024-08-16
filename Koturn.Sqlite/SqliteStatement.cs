@@ -7,7 +7,7 @@ namespace Koturn.Sqlite
     /// <summary>
     /// SQLite statement handle wrapper.
     /// </summary>
-    public class SqliteStatement : IDisposable
+    public class SqliteStatement : IDisposable, ISqliteColumnAccessable
     {
         /// <summary>
         /// A flag property which indicates this instance is disposed or not.
