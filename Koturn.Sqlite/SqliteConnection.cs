@@ -12,6 +12,14 @@ namespace Koturn.Sqlite
     public class SqliteConnection : IDisposable
     {
         /// <summary>
+        /// UTF-8 byte sequence of "ANALYZE".
+        /// </summary>
+        private static readonly byte[] AnalyzeUtf8Bytes;
+        /// <summary>
+        /// UTF-8 byte sequence of "VACUUM".
+        /// </summary>
+        private static readonly byte[] VacuumUtf8Bytes;
+        /// <summary>
         /// Cache of Run-Time Library Version string.
         /// </summary>
         /// <remarks>
@@ -31,8 +39,17 @@ namespace Koturn.Sqlite
         /// <remarks>
         /// <see cref="VersionNumber"/>.
         /// </remarks>
-        private static int _versionNumber = -1;
+        private static int _versionNumber;
 
+        /// <summary>
+        /// Initialize static members.
+        /// </summary>
+        static SqliteConnection()
+        {
+            AnalyzeUtf8Bytes = new [] { (byte)'A', (byte)'N', (byte)'A', (byte)'L', (byte)'Y', (byte)'Z', (byte)'E' };
+            VacuumUtf8Bytes = new [] { (byte)'V', (byte)'A', (byte)'C', (byte)'U', (byte)'U', (byte)'M' };
+            _versionNumber = -1;
+        }
 
         /// <summary>
         /// A flag property which indicates this instance is disposed or not.
@@ -301,7 +318,15 @@ namespace Koturn.Sqlite
         /// <param name="sql">SQL to be evaluated.</param>
         public void ExecuteSingle(string sql)
         {
-            var sqlUtf8Bytes = Encoding.UTF8.GetBytes(sql);
+            ExecuteSingle(Encoding.UTF8.GetBytes(sql));
+        }
+
+        /// <summary>
+        /// Execute first query of specified SQL string.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        public void ExecuteSingle(byte[] sqlUtf8Bytes)
+        {
             unsafe
             {
                 fixed (byte *pbSqlBase = sqlUtf8Bytes)
@@ -322,7 +347,17 @@ namespace Koturn.Sqlite
         /// <param name="callback">Callback function.</param>
         public void ExecuteSingle(string sql, Func<ISqliteColumnAccessable, bool> callback)
         {
-            using (var stmt = Prepare(sql))
+            ExecuteSingle(Encoding.UTF8.GetBytes(sql), callback);
+        }
+
+        /// <summary>
+        /// Execute specified SQL.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <param name="callback">Callback function.</param>
+        public void ExecuteSingle(byte[] sqlUtf8Bytes, Func<ISqliteColumnAccessable, bool> callback)
+        {
+            using (var stmt = Prepare(sqlUtf8Bytes))
             {
                 var accessor = (ISqliteColumnAccessable)stmt;
                 while (stmt.Step() && callback(accessor))
@@ -338,7 +373,16 @@ namespace Koturn.Sqlite
         /// <returns>Statement handle.</returns>
         public SqliteStatement Prepare(string sql)
         {
-            var sqlUtf8Bytes = Encoding.UTF8.GetBytes(sql);
+            return Prepare(Encoding.UTF8.GetBytes(sql));
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct prepared statement object.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <returns>Statement handle.</returns>
+        public SqliteStatement Prepare(byte[] sqlUtf8Bytes)
+        {
             unsafe
             {
                 fixed (byte *pbSqlBase = sqlUtf8Bytes)
@@ -381,7 +425,6 @@ namespace Koturn.Sqlite
         /// </summary>
         public SqliteTransaction BeginTransaction()
         {
-            ExecuteSingle("BEGIN");
             return new SqliteTransaction(this);
         }
 
@@ -442,7 +485,7 @@ namespace Koturn.Sqlite
         /// </summary>
         public void Vacuum()
         {
-            ExecuteSingle("VACUUM");
+            ExecuteSingle(VacuumUtf8Bytes);
         }
 
         /// <summary>
@@ -450,7 +493,7 @@ namespace Koturn.Sqlite
         /// </summary>
         public void Analyze()
         {
-            ExecuteSingle("ANALYZE");
+            ExecuteSingle(AnalyzeUtf8Bytes);
         }
 
         /// <summary>
