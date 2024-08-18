@@ -93,6 +93,9 @@ namespace Koturn.Sqlite
         /// <param name="funcName">Function name in sqlite3.dll.</param>
         /// <param name="result">Result code of SQLite3 functions.</param>
         /// <exception cref="SqliteException">Always thrown.</exception>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+        [DoesNotReturn]
+#endif
         public static void Throw(string funcName, SqliteResult result)
         {
             throw new SqliteException(funcName, result);
@@ -105,6 +108,9 @@ namespace Koturn.Sqlite
         /// <param name="result">Result code of SQLite3 functions.</param>
         /// <param name="message">The additional error message that explains the reason for the exception.</param>
         /// <exception cref="SqliteException">Always thrown.</exception>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+        [DoesNotReturn]
+#endif
         public static void Throw(string funcName, SqliteResult result, string message)
         {
             throw new SqliteException(funcName, result, message);
