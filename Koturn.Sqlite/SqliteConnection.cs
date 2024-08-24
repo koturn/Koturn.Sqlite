@@ -538,6 +538,53 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Get table info with pragma_table_info('xxx'), which is same as PRAGMA table_info('xxx').
+        /// </summary>
+        /// <param name="tableName">Table name.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteTableInfoRow"/>.</returns>
+        public IEnumerable<SqliteTableInfoRow> GetTableInfo(string tableName)
+        {
+            using (var stmt = Prepare("SELECT cid, name, type, \"notnull\", dflt_value, pk FROM pragma_table_info(:table_name)"))
+            {
+                stmt.Bind(1, tableName);
+                while (stmt.Step())
+                {
+                    yield return new SqliteTableInfoRow(
+                        stmt.GetIntUnchecked(0),  // cid
+                        stmt.GetTextUnchecked(1),  // name
+                        stmt.GetTextUnchecked(2),  // type
+                        stmt.GetIntUnchecked(3) == 1,  // notnull
+                        stmt.GetTextUnchecked(4),  // dflt_value
+                        stmt.GetIntUnchecked(5) == 1);  // pk
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get table info with pragma_table_xinfo('xxx'), which is same as PRAGMA table_xinfo('xxx').
+        /// </summary>
+        /// <param name="tableName">Table name.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteTableXInfoRow"/>.</returns>
+        public IEnumerable<SqliteTableXInfoRow> GetTableXInfo(string tableName)
+        {
+            using (var stmt = Prepare("SELECT cid, name, type, \"notnull\", dflt_value, pk, hidden FROM pragma_table_xinfo(:table_name)"))
+            {
+                stmt.Bind(1, tableName);
+                while (stmt.Step())
+                {
+                    yield return new SqliteTableXInfoRow(
+                        stmt.GetIntUnchecked(0),  // cid
+                        stmt.GetTextUnchecked(1),  // name
+                        stmt.GetTextUnchecked(2),  // type
+                        stmt.GetIntUnchecked(3) == 1,  // notnull
+                        stmt.GetTextUnchecked(4),  // dflt_value
+                        stmt.GetIntUnchecked(5) == 1,  // pk
+                        stmt.GetIntUnchecked(6));  // hidden
+                }
+            }
+        }
+
+        /// <summary>
         /// Execute "EXPLAIN".
         /// </summary>
         /// <param name="sql">Target query.</param>
