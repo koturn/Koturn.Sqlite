@@ -152,6 +152,8 @@ namespace Sample
 - `sqlite3_value_blob`
 - `sqlite3_value_bytes`
 - `sqlite3_value_bytes16`
+- `sqlite3_last_insert_rowid`
+- `sqlite3_set_last_insert_rowid`
 - `sqlite3_changes`
 - `sqlite3_changes64`
 - `sqlite3_total_changes`

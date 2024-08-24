@@ -265,6 +265,14 @@ namespace Koturn.Sqlite
         /// </summary>
         private static readonly Func<IntPtr, int> _valueBytes16;
         /// <summary>
+        /// Delegate instance of <see cref="NativeMethods.LastInsertRowId"/> or <see cref="NativeMethods.LastInsertRowIdW"/>.
+        /// </summary>
+        private static readonly Func<SqliteHandle, long> _lastInsertRowId;
+        /// <summary>
+        /// Delegate instance of <see cref="NativeMethods.SetLastInsertRowId"/> or <see cref="NativeMethods.SetLastInsertRowIdW"/>.
+        /// </summary>
+        private static readonly Action<SqliteHandle, long> _setLastInsertRowId;
+        /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Changes"/> or <see cref="NativeMethods.ChangesW"/>.
         /// </summary>
         private static readonly Func<SqliteHandle, int> _changes;
@@ -406,6 +414,8 @@ namespace Koturn.Sqlite
                 _valueBlob = NativeMethods.ValueBlobW;
                 _valueBytes = NativeMethods.ValueBytesW;
                 _valueBytes16 = NativeMethods.ValueBytes16W;
+                _lastInsertRowId = NativeMethods.LastInsertRowIdW;
+                _setLastInsertRowId = NativeMethods.SetLastInsertRowIdW;
                 _changes = NativeMethods.ChangesW;
                 _changes64 = NativeMethods.Changes64W;
                 _totalChanges = NativeMethods.TotalChangesW;
@@ -473,6 +483,8 @@ namespace Koturn.Sqlite
                 _valueBlob = NativeMethods.ValueBlob;
                 _valueBytes = NativeMethods.ValueBytes;
                 _valueBytes16 = NativeMethods.ValueBytes16;
+                _lastInsertRowId = NativeMethods.LastInsertRowId;
+                _setLastInsertRowId = NativeMethods.SetLastInsertRowId;
                 _changes = NativeMethods.Changes;
                 _changes64 = NativeMethods.Changes64;
                 _totalChanges = NativeMethods.TotalChanges;
@@ -1186,6 +1198,26 @@ namespace Koturn.Sqlite
         public static long Changes64(SqliteHandle db)
         {
             return _changes64(db);
+        }
+
+        /// <summary>
+        /// Last Insert Rowid.
+        /// </summary>
+        /// <param name="db">SQLite db handle.</param>
+        /// <returns>Last insert ROWID.</returns>
+        public static long LastInsertRowId(SqliteHandle db)
+        {
+            return _lastInsertRowId(db);
+        }
+
+        /// <summary>
+        /// Set the Last Insert Rowid value.
+        /// </summary>
+        /// <param name="db">SQLite db handle.</param>
+        /// <param name="rowId">ROWID to set.</param>
+        public static void SetLastInsertRowId(SqliteHandle db, long rowId)
+        {
+            _setLastInsertRowId(db, rowId);
         }
 
         /// <summary>
@@ -2010,6 +2042,28 @@ namespace Koturn.Sqlite
             public static extern int ValueBytes16(IntPtr pColumnValue);
 
             /// <summary>
+            /// Last Insert Rowid.
+            /// </summary>
+            /// <param name="db">SQLite db handle.</param>
+            /// <returns>Last insert ROWID.</returns>
+            /// <remarks>
+            /// <seealso href="https://www.sqlite.org/c3ref/last_insert_rowid.html"/>
+            /// </remarks>
+            [DllImport("sqlite3", EntryPoint = "sqlite3_last_insert_rowid", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
+            public static extern long LastInsertRowId(SqliteHandle db);
+
+            /// <summary>
+            /// Set the Last Insert Rowid value.
+            /// </summary>
+            /// <param name="db">SQLite db handle.</param>
+            /// <param name="rowId">ROWID to set.</param>
+            /// <remarks>
+            /// <seealso href="https://www.sqlite.org/c3ref/set_last_insert_rowid.html"/>
+            /// </remarks>
+            [DllImport("sqlite3", EntryPoint = "sqlite3_set_last_insert_rowid", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
+            public static extern void SetLastInsertRowId(SqliteHandle db, long rowId);
+
+            /// <summary>
             /// Count the number of rows modified.
             /// </summary>
             /// <param name="db">SQLite db handle.</param>
@@ -2797,6 +2851,28 @@ namespace Koturn.Sqlite
             /// </remarks>
             [DllImport("winsqlite3", EntryPoint = "sqlite3_value_bytes16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern int ValueBytes16W(IntPtr pColumnValue);
+
+            /// <summary>
+            /// Last Insert Rowid.
+            /// </summary>
+            /// <param name="db">SQLite db handle.</param>
+            /// <returns>Last insert ROWID.</returns>
+            /// <remarks>
+            /// <seealso href="https://www.sqlite.org/c3ref/last_insert_rowid.html"/>
+            /// </remarks>
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_last_insert_rowid", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
+            public static extern long LastInsertRowIdW(SqliteHandle db);
+
+            /// <summary>
+            /// Set the Last Insert Rowid value.
+            /// </summary>
+            /// <param name="db">SQLite db handle.</param>
+            /// <param name="rowId">ROWID to set.</param>
+            /// <remarks>
+            /// <seealso href="https://www.sqlite.org/c3ref/set_last_insert_rowid.html"/>
+            /// </remarks>
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_set_last_insert_rowid", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
+            public static extern void SetLastInsertRowIdW(SqliteHandle db, long rowId);
 
             /// <summary>
             /// Count the number of rows modified.

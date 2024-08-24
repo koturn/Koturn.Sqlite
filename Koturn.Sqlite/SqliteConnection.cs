@@ -56,6 +56,14 @@ namespace Koturn.Sqlite
         /// </summary>
         public bool IsDisposed { get; private set; }
         /// <summary>
+        /// Last insert ROWID.
+        /// </summary>
+        public long LastInsertRowId
+        {
+            get => SqliteLibrary.LastInsertRowId(_db);
+            set => SqliteLibrary.SetLastInsertRowId(_db, value);
+        }
+        /// <summary>
         /// Count the number of rows modified.
         /// </summary>
         public int ModifiedRowsCount => SqliteLibrary.Changes(_db);
