@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
-System.Diagnostics.CodeAnalysis
-#endif
 
 
 namespace Koturn.Sqlite
@@ -453,9 +450,9 @@ namespace Koturn.Sqlite
         /// <param name="type">Schema type.</param>
         /// <param name="name">Object name.</param>
         /// <returns>True if specified object exists, otherwise false.</returns>
-        public bool IsExists(SqliteSchemaType type, string name)
+        public bool IsExists(SqliteObjectType type, string name)
         {
-            return IsExists(GetSchemaTypeName(type), name);
+            return IsExists(SqliteEnumConverter.ToObjectTypeName(type), name);
         }
 
         /// <summary>
@@ -538,6 +535,51 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Get table list with pragma_table_list, which is same as PRAGMA table_list.
+        /// </summary>
+        /// <param name="tableName">Table name.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteTableListRow"/>.</returns>
+        public IEnumerable<SqliteTableListRow> GetTableList()
+        {
+            using (var stmt = Prepare("SELECT schema, name, type, ncol, wr, strict FROM pragma_table_list"))
+            {
+                while (stmt.Step())
+                {
+                    yield return new SqliteTableListRow(
+                        stmt.GetTextUnchecked(0),  // schema
+                        stmt.GetTextUnchecked(1),  // name
+                        SqliteEnumConverter.ToObjectType(stmt.GetTextUnchecked(2)),  // type
+                        stmt.GetIntUnchecked(3),  // ncol
+                        stmt.GetIntUnchecked(4) == 1,  // wr
+                        stmt.GetIntUnchecked(5) == 1);  // strict
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get table list with pragma_table_list WHERE schema = 'xxx', which is same as PRAGMA xxx.table_list.
+        /// </summary>
+        /// <param name="tableName">Table name.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteTableListRow"/>.</returns>
+        public IEnumerable<SqliteTableListRow> GetTableList(string schemaName)
+        {
+            using (var stmt = Prepare("SELECT schema, name, type, ncol, wr, strict FROM pragma_table_list WHERE schema = :schema"))
+            {
+                stmt.Bind(1, schemaName);
+                while (stmt.Step())
+                {
+                    yield return new SqliteTableListRow(
+                        stmt.GetTextUnchecked(0),  // schema
+                        stmt.GetTextUnchecked(1),  // name
+                        SqliteEnumConverter.ToObjectType(stmt.GetTextUnchecked(2)),  // type
+                        stmt.GetIntUnchecked(3),  // ncol
+                        stmt.GetIntUnchecked(4) == 1,  // wr
+                        stmt.GetIntUnchecked(5) == 1);  // strict
+                }
+            }
+        }
+
+        /// <summary>
         /// Get table info with pragma_table_info('xxx'), which is same as PRAGMA table_info('xxx').
         /// </summary>
         /// <param name="tableName">Table name.</param>
@@ -609,26 +651,6 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
-        /// Execute "EXPLAIN QUERY PLAN".
-        /// </summary>
-        /// <param name="sql">Target query.</param>
-        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteQueryPlan"/>.</returns>
-        public IEnumerable<SqliteQueryPlan> ExplainQueryPlan(string sql)
-        {
-            using (var stmt = Prepare("EXPLAIN QUERY PLAN " + sql))
-            {
-                while (stmt.Step())
-                {
-                    yield return new SqliteQueryPlan(
-                        stmt.GetIntUnchecked(0),  // id
-                        stmt.GetIntUnchecked(1),  // parent
-                        stmt.GetIntUnchecked(2),  // notused
-                        stmt.GetTextUnchecked(3));  // detail
-                }
-            }
-        }
-
-        /// <summary>
         /// Get table info with "pragma_index_info('xxx'), which is same as PRAGMA index_info('xxx')."
         /// </summary>
         /// <param name="indexName">Index name.</param>
@@ -667,6 +689,26 @@ namespace Koturn.Sqlite
                         stmt.GetIntUnchecked(3),  // desc
                         stmt.GetTextUnchecked(4),  // coll
                         stmt.GetIntUnchecked(5));  // key
+                }
+            }
+        }
+
+        /// <summary>
+        /// Execute "EXPLAIN QUERY PLAN".
+        /// </summary>
+        /// <param name="sql">Target query.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteQueryPlan"/>.</returns>
+        public IEnumerable<SqliteQueryPlan> ExplainQueryPlan(string sql)
+        {
+            using (var stmt = Prepare("EXPLAIN QUERY PLAN " + sql))
+            {
+                while (stmt.Step())
+                {
+                    yield return new SqliteQueryPlan(
+                        stmt.GetIntUnchecked(0),  // id
+                        stmt.GetIntUnchecked(1),  // parent
+                        stmt.GetIntUnchecked(2),  // notused
+                        stmt.GetTextUnchecked(3));  // detail
                 }
             }
         }
@@ -768,44 +810,6 @@ namespace Koturn.Sqlite
             {
             }
             return (int)(psbEnd - psb);
-        }
-
-        /// <summary>
-        /// Get name of schema kind.
-        /// </summary>
-        /// <param name="type">Schema type value.</param>
-        /// <returns>Name of schema kind.</returns>
-        private static string GetSchemaTypeName(SqliteSchemaType type)
-        {
-            switch (type)
-            {
-                case SqliteSchemaType.Table:
-                    return "table";
-                case SqliteSchemaType.Index:
-                    return "index";
-                case SqliteSchemaType.View:
-                    return "view";
-                case SqliteSchemaType.Trigger:
-                    return "trigger";
-                default:
-                    ThrowArgumentOutOfRangeException("type", type, string.Format("{0} is not value of SqliteSchemaType", (int)type));
-                    return null;
-            }
-        }
-
-        /// <summary>
-        /// Throws <see cref="ArgumentOutOfRangeException"/>.
-        /// </summary>
-        /// <param name="paramName">The name of the parameter that caused the exception.</param>
-        /// <param name="actualValue">The value of the argument that causes this exception.</param>
-        /// <param name="message">The message that describes the error.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Always throws.</exception>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
-        [DoesNotReturn]
-#endif
-        private static void ThrowArgumentOutOfRangeException<T>(string paramName, T actualValue, string message)
-        {
-            throw new ArgumentOutOfRangeException(paramName, actualValue, message);
         }
     }
 }
