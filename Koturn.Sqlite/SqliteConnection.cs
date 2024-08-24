@@ -240,36 +240,9 @@ namespace Koturn.Sqlite
         /// </summary>
         /// <param name="sql">SQL to be evaluated.</param>
         [Obsolete("This method uses legacy API, sqlite3_exec()")]
-        public void ExecuteLegacy(string sql)
+        public void ExecuteNonQueryLegacy(string sql)
         {
             SqliteLibrary.Execute(_db, sql);
-        }
-
-        /// <summary>
-        /// Execute specified SQL.
-        /// </summary>
-        /// <param name="sql">SQL to be evaluated.</param>
-        public void Execute(string sql)
-        {
-            var sqlUtf8Bytes = Encoding.UTF8.GetBytes(sql);
-            var byteCount = sqlUtf8Bytes.Length;
-            unsafe
-            {
-                fixed (byte *pbSqlBase = &sqlUtf8Bytes[0])
-                {
-                    var pbSql = pbSqlBase;
-                    while (*pbSql != 0)
-                    {
-                        using (var stmt = SqliteLibrary.Prepare(_db, ref pbSql, ref byteCount))
-                        {
-                            while (SqliteLibrary.Step(stmt, _db))
-                            {
-
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -321,19 +294,72 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Execute specified SQL.
+        /// </summary>
+        /// <param name="sql">SQL to be evaluated.</param>
+        /// <param name="callback">Callback function.</param>
+        public void Execute(string sql, Func<ISqliteColumnAccessable, bool> callback)
+        {
+            Execute(Encoding.UTF8.GetBytes(sql), callback);
+        }
+
+        /// <summary>
+        /// Execute specified SQL.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <param name="callback">Callback function.</param>
+        public void Execute(byte[] sqlUtf8Bytes, Func<ISqliteColumnAccessable, bool> callback)
+        {
+            using (var stmt = Prepare(sqlUtf8Bytes))
+            {
+                var accessor = (ISqliteColumnAccessable)stmt;
+                while (stmt.Step() && callback(accessor))
+                {
+                }
+            }
+        }
+
+        /// <summary>
+        /// Execute specified SQL.
+        /// </summary>
+        /// <param name="sql">SQL to be evaluated.</param>
+        public void ExecuteNonQuery(string sql)
+        {
+            var sqlUtf8Bytes = Encoding.UTF8.GetBytes(sql);
+            var byteCount = sqlUtf8Bytes.Length;
+            unsafe
+            {
+                fixed (byte *pbSqlBase = &sqlUtf8Bytes[0])
+                {
+                    var pbSql = pbSqlBase;
+                    while (*pbSql != 0)
+                    {
+                        using (var stmt = SqliteLibrary.Prepare(_db, ref pbSql, ref byteCount))
+                        {
+                            while (SqliteLibrary.Step(stmt, _db))
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Execute first query of specified SQL string.
         /// </summary>
         /// <param name="sql">SQL to be evaluated.</param>
-        public void ExecuteSingle(string sql)
+        public void ExecuteOneNonQuery(string sql)
         {
-            ExecuteSingle(Encoding.UTF8.GetBytes(sql));
+            ExecuteOneNonQuery(Encoding.UTF8.GetBytes(sql));
         }
 
         /// <summary>
         /// Execute first query of specified SQL string.
         /// </summary>
         /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
-        public void ExecuteSingle(byte[] sqlUtf8Bytes)
+        public void ExecuteOneNonQuery(byte[] sqlUtf8Bytes)
         {
             unsafe
             {
@@ -344,32 +370,6 @@ namespace Koturn.Sqlite
                     {
                         SqliteLibrary.Step(stmt, _db);
                     }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Execute specified SQL.
-        /// </summary>
-        /// <param name="sql">SQL to be evaluated.</param>
-        /// <param name="callback">Callback function.</param>
-        public void ExecuteSingle(string sql, Func<ISqliteColumnAccessable, bool> callback)
-        {
-            ExecuteSingle(Encoding.UTF8.GetBytes(sql), callback);
-        }
-
-        /// <summary>
-        /// Execute specified SQL.
-        /// </summary>
-        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
-        /// <param name="callback">Callback function.</param>
-        public void ExecuteSingle(byte[] sqlUtf8Bytes, Func<ISqliteColumnAccessable, bool> callback)
-        {
-            using (var stmt = Prepare(sqlUtf8Bytes))
-            {
-                var accessor = (ISqliteColumnAccessable)stmt;
-                while (stmt.Step() && callback(accessor))
-                {
                 }
             }
         }
@@ -718,7 +718,7 @@ namespace Koturn.Sqlite
         /// </summary>
         public void Vacuum()
         {
-            ExecuteSingle(VacuumUtf8Bytes);
+            ExecuteOneNonQuery(VacuumUtf8Bytes);
         }
 
         /// <summary>
@@ -726,7 +726,7 @@ namespace Koturn.Sqlite
         /// </summary>
         public void Analyze()
         {
-            ExecuteSingle(AnalyzeUtf8Bytes);
+            ExecuteOneNonQuery(AnalyzeUtf8Bytes);
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace Koturn.Sqlite
         /// </summary>
         internal SqliteTransaction(SqliteConnection connection)
         {
-            connection.ExecuteSingle(BeginUtf8Bytes);
+            connection.ExecuteOneNonQuery(BeginUtf8Bytes);
             _connection = connection;
         }
 
@@ -56,7 +56,7 @@ namespace Koturn.Sqlite
         /// </summary>
         public void Commit()
         {
-            _connection.ExecuteSingle(CommitUtf8Bytes);
+            _connection.ExecuteOneNonQuery(CommitUtf8Bytes);
             IsDisposed = true;
         }
 
@@ -65,7 +65,7 @@ namespace Koturn.Sqlite
         /// </summary>
         public void Rollback()
         {
-            _connection.ExecuteSingle(RollbackUtf8Bytes);
+            _connection.ExecuteOneNonQuery(RollbackUtf8Bytes);
             IsDisposed = true;
         }
 
@@ -75,7 +75,7 @@ namespace Koturn.Sqlite
         /// <param name="savePoint">Name of save point.</param>
         public void Rollback(string savePoint)
         {
-            _connection.ExecuteSingle("ROLLBACK TO SAVEPOINT " + savePoint);
+            _connection.ExecuteOneNonQuery("ROLLBACK TO SAVEPOINT " + savePoint);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Koturn.Sqlite
         /// <param name="savePoint">Name of save point.</param>
         public void Save(string savePoint)
         {
-            _connection.ExecuteSingle("SAVEPOINT " + savePoint);
+            _connection.ExecuteOneNonQuery("SAVEPOINT " + savePoint);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Koturn.Sqlite
         /// <param name="savePoint">Name of save point.</param>
         public void Release(string savePoint)
         {
-            _connection.ExecuteSingle("RELEASE SAVEPOINT " + savePoint);
+            _connection.ExecuteOneNonQuery("RELEASE SAVEPOINT " + savePoint);
         }
 
 
