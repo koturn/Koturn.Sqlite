@@ -308,6 +308,23 @@ namespace Koturn.Sqlite
         /// </summary>
         /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
         /// <param name="callback">Callback function.</param>
+        public void Execute(byte[] sqlUtf8Bytes, Action<ISqliteColumnAccessable> callback)
+        {
+            using (var stmt = Prepare(sqlUtf8Bytes))
+            {
+                var accessor = (ISqliteColumnAccessable)stmt;
+                while (stmt.Step())
+                {
+                    callback(accessor);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Execute specified SQL.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <param name="callback">Callback function.</param>
         public void Execute(byte[] sqlUtf8Bytes, Func<ISqliteColumnAccessable, bool> callback)
         {
             using (var stmt = Prepare(sqlUtf8Bytes))
@@ -387,18 +404,33 @@ namespace Koturn.Sqlite
         /// <summary>
         /// Compile SQL statement and construct prepared statement object.
         /// </summary>
+        /// <param name="sql">SQL to be evaluated.</param>
+        /// <param name="offset">Offset position of <paramref name="sql"/>.</param>
+        /// <returns>Statement handle.</returns>
+        public SqliteStatement Prepare(string sql, ref int offset)
+        {
+            return new SqliteStatement(SqliteLibrary.Prepare(_db, sql, ref offset));
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct prepared statement object.
+        /// </summary>
         /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
         /// <returns>Statement handle.</returns>
         public SqliteStatement Prepare(byte[] sqlUtf8Bytes)
         {
-            unsafe
-            {
-                fixed (byte *pbSqlBase = sqlUtf8Bytes)
-                {
-                    byte *_;
-                    return new SqliteStatement(SqliteLibrary.Prepare(_db, pbSqlBase, sqlUtf8Bytes.Length, out _));
-                }
-            }
+            return new SqliteStatement(SqliteLibrary.Prepare(_db, sqlUtf8Bytes));
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct prepared statement object.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <param name="offset">Offset of <paramref name="sqlUtf8Bytes"/>.</param>
+        /// <returns>Statement handle.</returns>
+        public SqliteStatement Prepare(byte[] sqlUtf8Bytes, ref int offset)
+        {
+            return new SqliteStatement(SqliteLibrary.Prepare(_db, sqlUtf8Bytes, ref offset));
         }
 
         /// <summary>

@@ -63,6 +63,16 @@ namespace Koturn.Sqlite
         /// <returns>Result code.</returns>
         private delegate SqliteResult PrepareFunc(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
         /// <summary>
+        /// Delegate for <see cref="NativeMethods.Prepare16"/> or <see cref="NativeMethods.Prepare16W"/>.
+        /// </summary>
+        /// <param name="db">An open database.</param>
+        /// <param name="pSql">Pointer to SQL to be evaluated (UTF-16).</param>
+        /// <param name="nBytes">Maximum length of SQL in bytes.</param>
+        /// <param name="stmt">Statement handle.</param>
+        /// <param name="pSqlTail">Pointer to unused portion of <paramref name="pSql"/>.</param>
+        /// <returns>Result code.</returns>
+        private delegate SqliteResult Prepare16Func(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
+        /// <summary>
         /// Delegate for <see cref="NativeMethods.BlobOpen"/> or <see cref="NativeMethods.BlobOpenW"/>.
         /// </summary>
         /// <param name="db">SQLite db handle.</param>
@@ -120,6 +130,10 @@ namespace Koturn.Sqlite
         /// Delegate instance of <see cref="NativeMethods.Prepare"/> or <see cref="NativeMethods.PrepareW"/>.
         /// </summary>
         private static readonly PrepareFunc _prepare;
+        /// <summary>
+        /// Delegate instance of <see cref="NativeMethods.Prepare16"/> or <see cref="NativeMethods.Prepare16W"/>.
+        /// </summary>
+        private static readonly Prepare16Func _prepare16;
         /// <summary>
         /// Delegate instance of <see cref="NativeMethods.Sql"/> or <see cref="NativeMethods.SqlW"/>.
         /// </summary>
@@ -378,6 +392,7 @@ namespace Koturn.Sqlite
                 _getErrorMessage = NativeMethods.GetErrorMessageW;
                 _getErrorString = NativeMethods.GetErrorStringW;
                 _prepare = NativeMethods.PrepareW;
+                _prepare16 = NativeMethods.Prepare16W;
                 _sql = NativeMethods.SqlW;
                 _expandedSql = NativeMethods.ExpandedSqlW;
                 _normalizedSql = NativeMethods.NormalizedSqlW;
@@ -447,6 +462,7 @@ namespace Koturn.Sqlite
                 _getErrorMessage = NativeMethods.GetErrorMessage;
                 _getErrorString = NativeMethods.GetErrorString;
                 _prepare = NativeMethods.Prepare;
+                _prepare16 = NativeMethods.Prepare16W;
                 _sql = NativeMethods.Sql;
                 _expandedSql = NativeMethods.ExpandedSql;
                 _normalizedSql = NativeMethods.NormalizedSql;
@@ -671,13 +687,54 @@ namespace Koturn.Sqlite
         /// Compile SQL statement and construct handle of prepared statement object.
         /// </summary>
         /// <param name="db">An open database.</param>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <returns>Statement handle.</returns>
+        public static SqliteStatementHandle Prepare(SqliteHandle db, byte[] sqlUtf8Bytes)
+        {
+            unsafe
+            {
+                fixed (byte *pbSqlBase = &sqlUtf8Bytes[0])
+                {
+                    return Prepare(db, pbSqlBase, sqlUtf8Bytes.Length, out _);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct handle of prepared statement object.
+        /// </summary>
+        /// <param name="db">An open database.</param>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <param name="offset">Offset position of <paramref name="sqlUtf8Bytes"/>.</param>
+        /// <returns>Statement handle.</returns>
+        public static SqliteStatementHandle Prepare(SqliteHandle db, byte[] sqlUtf8Bytes, ref int offset)
+        {
+            unsafe
+            {
+                fixed (byte *pbSqlBase = &sqlUtf8Bytes[offset])
+                {
+                    byte *pbSqlNext;
+                    var stmt = Prepare(db, pbSqlBase, sqlUtf8Bytes.Length, out pbSqlNext);
+                    offset = pbSqlNext == pbSqlBase ? -1 : (offset + (int)(pbSqlNext - pbSqlBase));
+                    return stmt;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct handle of prepared statement object.
+        /// </summary>
+        /// <param name="db">An open database.</param>
         /// <param name="pbSql">Pointer to SQL to be evaluated (UTF-8).</param>
         /// <param name="nBytes">Maximum length of SQL in bytes.</param>
         /// <returns>Statement handle.</returns>
         public unsafe static SqliteStatementHandle Prepare(SqliteHandle db, ref byte *pbSql, ref int nBytes)
         {
             var result = Prepare(db, pbSql, nBytes, out var pbSqlNext);
-            nBytes -= (int)((ulong)pbSqlNext - (ulong)pbSql);
+            if (nBytes >= 0)
+            {
+                nBytes -= (int)(pbSqlNext - pbSql);
+            }
             pbSql = pbSqlNext;
             return result;
         }
@@ -693,8 +750,81 @@ namespace Koturn.Sqlite
         public unsafe static SqliteStatementHandle Prepare(SqliteHandle db, byte *pbSql, int nBytes, out byte *pbSqlNext)
         {
             var result = _prepare(db, (IntPtr)pbSql, nBytes, out var stmt, out var pSqlNext);
-            SqliteException.ThrowIfFailed("sqlite3_prepare", result, db);
+            SqliteException.ThrowIfFailed("sqlite3_prepare_v2", result, db);
             pbSqlNext = (byte *)pSqlNext;
+            return stmt;
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct handle of prepared statement object.
+        /// </summary>
+        /// <param name="db">An open database.</param>
+        /// <param name="sql">SQL to be evaluated.</param>
+        /// <returns>Statement handle.</returns>
+        public static SqliteStatementHandle Prepare(SqliteHandle db, string sql)
+        {
+            unsafe
+            {
+                fixed (char *pbSqlBase = sql)
+                {
+                    return Prepare(db, pbSqlBase, sql.Length * sizeof(char), out _);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct handle of prepared statement object.
+        /// </summary>
+        /// <param name="db">An open database.</param>
+        /// <param name="sql">SQL to be evaluated.</param>
+        /// <param name="offset">Offset position of <paramref name="sql"/>.</param>
+        /// <returns>Statement handle.</returns>
+        public static SqliteStatementHandle Prepare(SqliteHandle db, string sql, ref int offset)
+        {
+            unsafe
+            {
+                fixed (char *pcSqlBase = sql)
+                {
+                    char* pcSql = &pcSqlBase[offset];
+                    char *pcSqlNext;
+                    var stmt = Prepare(db, pcSql, (sql.Length - offset) * sizeof(char), out pcSqlNext);
+                    offset = pcSqlNext == pcSql ? -1 : (offset + (int)(pcSqlNext - pcSql));
+                    return stmt;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct handle of prepared statement object.
+        /// </summary>
+        /// <param name="db">An open database.</param>
+        /// <param name="pcSql">Pointer to SQL to be evaluated (UTF-16).</param>
+        /// <param name="nBytes">Maximum length of SQL in bytes.</param>
+        /// <returns>Statement handle.</returns>
+        public unsafe static SqliteStatementHandle Prepare(SqliteHandle db, ref char *pcSql, ref int nBytes)
+        {
+            var result = Prepare(db, pcSql, nBytes, out var pbSqlNext);
+            if (nBytes >= 0)
+            {
+                nBytes -= (int)((byte *)pbSqlNext - (byte *)pcSql);
+            }
+            pcSql = pbSqlNext;
+            return result;
+        }
+
+        /// <summary>
+        /// Compile SQL statement and construct handle of prepared statement object.
+        /// </summary>
+        /// <param name="db">An open database.</param>
+        /// <param name="pcSql">Pointer to SQL to be evaluated (UTF-16).</param>
+        /// <param name="nBytes">Maximum length of SQL in bytes.</param>
+        /// <param name="pcSqlNext">Pointer to unused portion of <paramref name="pcSql"/>.</param>
+        /// <returns>Statement handle.</returns>
+        public unsafe static SqliteStatementHandle Prepare(SqliteHandle db, char *pcSql, int nBytes, out char *pcSqlNext)
+        {
+            var result = _prepare16(db, (IntPtr)pcSql, nBytes, out var stmt, out var pSqlNext);
+            SqliteException.ThrowIfFailed("sqlite3_prepare16_v2", result, db);
+            pcSqlNext = (char *)pSqlNext;
             return stmt;
         }
 
@@ -1608,6 +1738,21 @@ namespace Koturn.Sqlite
             public static extern SqliteResult Prepare(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
 
             /// <summary>
+            /// Compile SQL statement and construct prepared statement object.
+            /// </summary>
+            /// <param name="db">An open database.</param>
+            /// <param name="pSql">Pointer to SQL to be evaluated (UTF-16).</param>
+            /// <param name="nBytes">Maximum length of SQL in bytes.</param>
+            /// <param name="stmt">Statement handle.</param>
+            /// <param name="pSqlTail">Pointer to unused portion of <paramref name="sql"/>.</param>
+            /// <returns>Result code.</returns>
+            /// <remarks>
+            /// <seealso href="https://www.sqlite.org/c3ref/prepare.html"/>
+            /// </remarks>
+            [DllImport("sqlite3", EntryPoint = "sqlite3_prepare16_v2", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
+            public static extern SqliteResult Prepare16(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
+
+            /// <summary>
             /// Retrive SQL text.
             /// </summary>
             /// <param name="stmt">Statement handle.</param>
@@ -2415,6 +2560,21 @@ namespace Koturn.Sqlite
             /// </remarks>
             [DllImport("winsqlite3", EntryPoint = "sqlite3_prepare", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult PrepareW(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
+
+            /// <summary>
+            /// Compile SQL statement and construct prepared statement object.
+            /// </summary>
+            /// <param name="db">An open database.</param>
+            /// <param name="pSql">Pointer to SQL to be evaluated (UTF-16).</param>
+            /// <param name="nBytes">Maximum length of SQL in bytes.</param>
+            /// <param name="stmt">Statement handle.</param>
+            /// <param name="pSqlTail">Pointer to unused portion of <paramref name="sql"/>.</param>
+            /// <returns>Result code.</returns>
+            /// <remarks>
+            /// <seealso href="https://www.sqlite.org/c3ref/prepare.html"/>
+            /// </remarks>
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_prepare16_v2", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
+            public static extern SqliteResult Prepare16W(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
 
             /// <summary>
             /// Retrive SQL text.
