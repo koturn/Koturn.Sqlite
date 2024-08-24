@@ -520,6 +520,24 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Get definition SQL of specified object.
+        /// </summary>
+        /// <param name="name">Object name.</param>
+        /// <returns>Definition SQL.</returns>
+        public string GetDefinition(string name)
+        {
+            using (var stmt = Prepare("SELECT sql FROM sqlite_schema WHERE name LIKE :name"))
+            {
+                stmt.Bind(1, name);
+                if (!stmt.Step())
+                {
+                    return null;
+                }
+                return stmt.GetTextUnchecked(0);
+            }
+        }
+
+        /// <summary>
         /// Execute "EXPLAIN".
         /// </summary>
         /// <param name="sql">Target query.</param>
