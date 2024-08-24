@@ -629,6 +629,49 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Get table info with "pragma_index_info('xxx'), which is same as PRAGMA index_info('xxx')."
+        /// </summary>
+        /// <param name="indexName">Index name.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteIndexInfoRow"/>.</returns>
+        public IEnumerable<SqliteIndexInfoRow> GetIndexInfo(string indexName)
+        {
+            using (var stmt = Prepare("SELECT seqno, cid, name FROM pragma_index_info(:index_name)"))
+            {
+                stmt.Bind(1, indexName);
+                while (stmt.Step())
+                {
+                    yield return new SqliteIndexInfoRow(
+                        stmt.GetIntUnchecked(0),  // seqno
+                        stmt.GetIntUnchecked(1),  // cid
+                        stmt.GetTextUnchecked(2));  // name
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get table info with "pragma_index_xinfo('xxx'), which is same as PRAGMA index_info('xxx')."
+        /// </summary>
+        /// <param name="indexName">Index name.</param>
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteIndexXInfoRow"/>.</returns>
+        public IEnumerable<SqliteIndexXInfoRow> GetIndexXInfo(string indexName)
+        {
+            using (var stmt = Prepare("SELECT seqno, cid, name, desc, coll, key FROM pragma_index_xinfo(:index_name)"))
+            {
+                stmt.Bind(1, indexName);
+                while (stmt.Step())
+                {
+                    yield return new SqliteIndexXInfoRow(
+                        stmt.GetIntUnchecked(0),  // seqno
+                        stmt.GetIntUnchecked(1),  // cid
+                        stmt.GetTextUnchecked(2),  // name
+                        stmt.GetIntUnchecked(3),  // desc
+                        stmt.GetTextUnchecked(4),  // coll
+                        stmt.GetIntUnchecked(5));  // key
+                }
+            }
+        }
+
+        /// <summary>
         /// Execute VACUUM.
         /// </summary>
         public void Vacuum()
