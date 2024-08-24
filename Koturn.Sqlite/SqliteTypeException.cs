@@ -1,5 +1,8 @@
 using System;
 using System.Runtime.Serialization;
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 
 namespace Koturn.Sqlite
