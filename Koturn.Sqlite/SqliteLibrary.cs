@@ -1670,7 +1670,7 @@ namespace Koturn.Sqlite
             /// <seealso href="https://www.sqlite.org/c3ref/open.html"/>
             /// </remarks>
             [DllImport("sqlite3", EntryPoint = "sqlite3_open16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-            public static extern SqliteResult Open(string filePath, out SqliteHandle db);
+            public static extern SqliteResult Open([MarshalAs(UnmanagedType.LPWStr), In] string filePath, out SqliteHandle db);
 
             /// <summary>
             /// Open database.
@@ -1734,7 +1734,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/prepare.html"/>
             /// </remarks>
-            [DllImport("sqlite3", EntryPoint = "sqlite3_prepare", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("sqlite3", EntryPoint = "sqlite3_prepare_v2", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
             public static extern SqliteResult Prepare(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
 
             /// <summary>
@@ -1894,7 +1894,7 @@ namespace Koturn.Sqlite
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
             [DllImport("sqlite3", EntryPoint = "sqlite3_bind_text16", ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-            public static extern SqliteResult BindText(SqliteStatementHandle stmt, int index, string val, int n, IntPtr callback);
+            public static extern SqliteResult BindText(SqliteStatementHandle stmt, int index, [MarshalAs(UnmanagedType.LPWStr), In] string val, int n, IntPtr callback);
 
             /// <summary>
             /// Bind BLOB data to prepared statement.
@@ -2494,7 +2494,7 @@ namespace Koturn.Sqlite
             /// <seealso href="https://www.sqlite.org/c3ref/open.html"/>
             /// </remarks>
             [DllImport("winsqlite3", EntryPoint = "sqlite3_open16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-            public static extern SqliteResult OpenW(string filePath, out SqliteHandle db);
+            public static extern SqliteResult OpenW([MarshalAs(UnmanagedType.LPWStr), In] string filePath, out SqliteHandle db);
 
             /// <summary>
             /// Open database.
@@ -2558,7 +2558,7 @@ namespace Koturn.Sqlite
             /// <remarks>
             /// <seealso href="https://www.sqlite.org/c3ref/prepare.html"/>
             /// </remarks>
-            [DllImport("winsqlite3", EntryPoint = "sqlite3_prepare", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
+            [DllImport("winsqlite3", EntryPoint = "sqlite3_prepare_v2", ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
             public static extern SqliteResult PrepareW(SqliteHandle db, IntPtr pSql, int nBytes, out SqliteStatementHandle stmt, out IntPtr pSqlTail);
 
             /// <summary>
@@ -2720,7 +2720,7 @@ namespace Koturn.Sqlite
             /// <seealso href="https://www.sqlite.org/c3ref/bind_blob.html"/>
             /// </remarks>
             [DllImport("winsqlite3", EntryPoint = "sqlite3_bind_text16", ExactSpelling = true, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-            public static extern SqliteResult BindTextW(SqliteStatementHandle stmt, int index, string val, int n, IntPtr callback);
+            public static extern SqliteResult BindTextW(SqliteStatementHandle stmt, int index, [MarshalAs(UnmanagedType.LPWStr), In] string val, int n, IntPtr callback);
 
             /// <summary>
             /// Bind BLOB data to prepared statement.
