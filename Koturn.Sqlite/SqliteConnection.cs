@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+System.Diagnostics.CodeAnalysis
+#endif
 
 
 namespace Koturn.Sqlite
@@ -445,6 +448,78 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Check if specified schema exists or not.
+        /// </summary>
+        /// <param name="type">Schema type.</param>
+        /// <param name="name">Object name.</param>
+        /// <returns>True if specified object exists, otherwise false.</returns>
+        public bool IsExists(SqliteSchemaType type, string name)
+        {
+            return IsExists(GetSchemaTypeName(type), name);
+        }
+
+        /// <summary>
+        /// Check if specified index exists or not.
+        /// </summary>
+        /// <param name="typeName">Schema type.</param>
+        /// <param name="name">Object name.</param>
+        /// <returns>True if specified object exists, otherwise false.</returns>
+        public bool IsExists(string typeName, string name)
+        {
+            // sqlite_master is legacy table, sqlite_schema is preferred.
+            using (var stmt = Prepare("SELECT EXISTS(SELECT 1 FROM sqlite_schema WHERE type = :type AND name LIKE :name) AS is_exists"))
+            {
+                stmt.Bind(1, typeName);
+                stmt.Bind(2, name);
+                if (!stmt.Step())
+                {
+                    return false;
+                }
+                return stmt.GetIntUnchecked(0) != 0;
+            }
+        }
+
+        /// <summary>
+        /// Check if specified table exists or not.
+        /// </summary>
+        /// <param name="tableName">Table name.</param>
+        /// <returns>True if specified table exists, otherwise false.</returns>
+        public bool IsTableExists(string tableName)
+        {
+            return IsExists("table", tableName);
+        }
+
+        /// <summary>
+        /// Check if specified index exists or not.
+        /// </summary>
+        /// <param name="indexName">Index name.</param>
+        /// <returns>True if specified index exists, otherwise false.</returns>
+        public bool IsIndexExists(string indexName)
+        {
+            return IsExists("index", indexName);
+        }
+
+        /// <summary>
+        /// Check if specified view exists or not.
+        /// </summary>
+        /// <param name="viewName">view name.</param>
+        /// <returns>True if specified view exists, otherwise false.</returns>
+        public bool IsViewExists(string viewName)
+        {
+            return IsExists("view", viewName);
+        }
+
+        /// <summary>
+        /// Check if specified trigger exists or not.
+        /// </summary>
+        /// <param name="triggerName">trigger name.</param>
+        /// <returns>True if specified view exists, otherwise false.</returns>
+        public bool IsTriggerExists(string triggerName)
+        {
+            return IsExists("trigger", triggerName);
+        }
+
+        /// <summary>
         /// Execute "EXPLAIN".
         /// </summary>
         /// <param name="sql">Target query.</param>
@@ -585,6 +660,44 @@ namespace Koturn.Sqlite
             {
             }
             return (int)(psbEnd - psb);
+        }
+
+        /// <summary>
+        /// Get name of schema kind.
+        /// </summary>
+        /// <param name="type">Schema type value.</param>
+        /// <returns>Name of schema kind.</returns>
+        private static string GetSchemaTypeName(SqliteSchemaType type)
+        {
+            switch (type)
+            {
+                case SqliteSchemaType.Table:
+                    return "table";
+                case SqliteSchemaType.Index:
+                    return "index";
+                case SqliteSchemaType.View:
+                    return "view";
+                case SqliteSchemaType.Trigger:
+                    return "trigger";
+                default:
+                    ThrowArgumentOutOfRangeException("type", type, string.Format("{0} is not value of SqliteSchemaType", (int)type));
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Throws <see cref="ArgumentOutOfRangeException"/>.
+        /// </summary>
+        /// <param name="paramName">The name of the parameter that caused the exception.</param>
+        /// <param name="actualValue">The value of the argument that causes this exception.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Always throws.</exception>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+        [DoesNotReturn]
+#endif
+        private static void ThrowArgumentOutOfRangeException<T>(string paramName, T actualValue, string message)
+        {
+            throw new ArgumentOutOfRangeException(paramName, actualValue, message);
         }
     }
 }
