@@ -457,7 +457,7 @@ namespace Koturn.Sqlite
         /// <returns>Opened <see cref="SqliteBlobStream"/>.</returns>
         public SqliteBlobStream OpenBlob(string dbName, string tableName, string columnName, long rowId, SqliteOpenFlags flags)
         {
-            return new SqliteBlobStream(_db, "main", tableName, columnName, rowId, flags);
+            return new SqliteBlobStream(_db, dbName, tableName, columnName, rowId, flags);
         }
 
         /// <summary>
