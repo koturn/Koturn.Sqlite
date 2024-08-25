@@ -392,6 +392,33 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Executes the query, and returns the first column of the first row in the result set returned by the query.
+        /// </summary>
+        /// <param name="sql">SQL to be evaluated.</param>
+        /// <returns>The first column of the first row in the result set.</returns>
+        public object ExecuteScalar(string sql)
+        {
+            return ExecuteScalar(Encoding.UTF8.GetBytes(sql));
+        }
+
+        /// <summary>
+        /// Executes the query, and returns the first column of the first row in the result set returned by the query.
+        /// </summary>
+        /// <param name="sqlUtf8Bytes">UTF-8 byte sequence of SQL to be evaluated.</param>
+        /// <returns>The first column of the first row in the result set.</returns>
+        public object ExecuteScalar(byte[] sqlUtf8Bytes)
+        {
+            using (var stmt = Prepare(sqlUtf8Bytes))
+            {
+                if (!stmt.Step())
+                {
+                    throw new InvalidOperationException("No result is set");
+                }
+                return stmt.Get(0);
+            }
+        }
+
+        /// <summary>
         /// Compile SQL statement and construct prepared statement object.
         /// </summary>
         /// <param name="sql">SQL to be evaluated.</param>

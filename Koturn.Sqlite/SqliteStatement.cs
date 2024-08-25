@@ -474,6 +474,78 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Get result object from a query.
+        /// </summary>
+        /// <param name="index">Index of column (0-based).</param>
+        /// <returns>Result object.</returns>
+        public object Get(int index)
+        {
+            CheckColumnIndex("index", index);
+            var pColumnValue = SqliteLibrary.ColumnValue(_stmt, index);
+            var valueType = SqliteLibrary.ValueType(pColumnValue);
+            switch (valueType)
+            {
+                case SqliteValueType.Integer:
+                    return SqliteLibrary.ValueInt64(pColumnValue);
+                case SqliteValueType.Float:
+                    return SqliteLibrary.ValueDouble(pColumnValue);
+                case SqliteValueType.Text:
+                    return SqliteLibrary.ValueText(pColumnValue);
+                case SqliteValueType.Blob:
+                    return SqliteLibrary.ValueBlob(pColumnValue);
+                case SqliteValueType.Null:
+                    return DBNull.Value;
+                default:
+                    ThrowArgumentOutOfRangeException("valueType", valueType, "Unrecognized value type");
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Get result object from a query.
+        /// </summary>
+        /// <param name="name">Name of column.</param>
+        /// <returns>Result object.</returns>
+        public object Get(string name)
+        {
+            return Get(GetNameDict()[name]);
+        }
+
+        /// <summary>
+        /// Get result object as specified type from a query.
+        /// </summary>
+        /// <typeparam name="T">Result object type.</typeparam>
+        /// <param name="index">Index of column (0-based).</param>
+        /// <returns>Result object.</returns>
+        /// <exception cref="NotSupportedException">Thrown when unsupported type is specified.</exception>
+        public object Get<T>(int index)
+        {
+            var t = typeof(T);
+            return t == typeof(short) ? (short)GetNullableInt(index)
+                : t == typeof(ushort) ? (ushort)GetNullableInt(index)
+                : t == typeof(int) ? GetNullableInt(index)
+                : t == typeof(uint) ? (uint)GetNullableInt(index)
+                : t == typeof(long) ? GetNullableInt64(index)
+                : t == typeof(ulong) ? (ulong)GetNullableInt64(index)
+                : t == typeof(float) ? (float)GetNullableDouble(index)
+                : t == typeof(double) ? GetNullableDouble(index)
+                : t == typeof(string) ? GetText(index)
+                : t == typeof(byte[]) ? (object)GetBlob(index)
+                : throw new NotSupportedException("Not supported type: " + t.Name);
+        }
+
+        /// <summary>
+        /// Get result object as specified type from a query.
+        /// </summary>
+        /// <typeparam name="T">Result object type.</typeparam>
+        /// <param name="name">Name of column.</param>
+        /// <returns>Result object.</returns>
+        public object Get<T>(string name)
+        {
+            return Get<T>(GetNameDict()[name]);
+        }
+
+        /// <summary>
         /// Get result value as <see cref="int"/> from a query.
         /// </summary>
         /// <param name="index">Index of column (0-based; value range is not checked).</param>
@@ -1119,7 +1191,7 @@ namespace Koturn.Sqlite
         /// <param name="actualValue">Actual value.</param>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException">Always thrown.</exception>
-        private static void ThrowArgumentOutOfRangeException(string paramName, int actualValue, string message)
+        private static void ThrowArgumentOutOfRangeException<T>(string paramName, T actualValue, string message)
         {
             throw new ArgumentOutOfRangeException(paramName, actualValue, message);
         }
