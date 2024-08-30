@@ -90,7 +90,7 @@ namespace Koturn.Sqlite
         /// <summary>
         /// The database text encoding. A value of 1 means UTF-8. A value of 2 means UTF-16le. A value of 3 means UTF-16be.
         /// </summary>
-        public uint TextEncodingValue { get; set; }
+        public SqliteEncodingValues TextEncodingValue { get; set; }
         /// <summary>
         /// The "user version" as read and set by the user_version pragma.
         /// </summary>
@@ -136,11 +136,11 @@ namespace Koturn.Sqlite
             {
                 switch (TextEncodingValue)
                 {
-                    case 1:
+                    case SqliteEncodingValues.Utf8:
                         return Encoding.UTF8;
-                    case 2:
+                    case SqliteEncodingValues.Utf16:
                         return Encoding.Unicode;
-                    case 3:
+                    case SqliteEncodingValues.Utf16BigEndian:
                         return Encoding.BigEndianUnicode;
                     default:
                         throw new NotSupportedException("Unrecognized text encoding value " + TextEncodingValue);
@@ -219,7 +219,7 @@ namespace Koturn.Sqlite
                     header.SchemaLayerFileFormat = SwapBytes(header.SchemaLayerFileFormat);
                     header.PageCacheSize = SwapBytes(header.PageCacheSize);
                     header.LargestRootPage = SwapBytes(header.LargestRootPage);
-                    header.TextEncodingValue = SwapBytes(header.TextEncodingValue);
+                    header.TextEncodingValue = (SqliteEncodingValues)SwapBytes((uint)header.TextEncodingValue);
                     header.UserVersion = SwapBytes(header.UserVersion);
                     header.VacuumMode = SwapBytes(header.VacuumMode);
                     header.ApplicationId = SwapBytes(header.ApplicationId);
