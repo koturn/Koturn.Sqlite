@@ -1049,9 +1049,9 @@ namespace Koturn.Sqlite
         {
             unsafe
             {
-                fixed (byte *pBlob = &blob[0])
+                fixed (byte *pBlob = &blob[offset])
                 {
-                    Bind(stmt, index, (IntPtr)(pBlob + offset), length, SqliteDestructorType.Transient);
+                    Bind(stmt, index, (IntPtr)pBlob, length, SqliteDestructorType.Transient);
                 }
             }
         }
@@ -1068,9 +1068,9 @@ namespace Koturn.Sqlite
         {
             unsafe
             {
-                fixed (byte *pBlob = &blob[0])
+                fixed (byte *pBlob = &blob[offset])
                 {
-                    Bind(stmt, index, (IntPtr)(pBlob + offset), length, SqliteDestructorType.Transient);
+                    Bind(stmt, index, (IntPtr)pBlob, length, SqliteDestructorType.Transient);
                 }
             }
         }
@@ -1438,9 +1438,9 @@ namespace Koturn.Sqlite
         {
             unsafe
             {
-                fixed (byte *p = &data[0])
+                fixed (byte *p = &data[offset])
                 {
-                    BlobRead(blobHandle, (IntPtr)(p + offset), count, blobOffset);
+                    BlobRead(blobHandle, (IntPtr)p, count, blobOffset);
                 }
             }
         }
@@ -1470,9 +1470,9 @@ namespace Koturn.Sqlite
         {
             unsafe
             {
-                fixed (byte *p = &data[0])
+                fixed (byte *p = &data[offset])
                 {
-                    BlobWrite(blobHandle, (IntPtr)(p + offset), count, blobOffset);
+                    BlobWrite(blobHandle, (IntPtr)p, count, blobOffset);
                 }
             }
         }
