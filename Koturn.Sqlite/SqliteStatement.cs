@@ -10,6 +10,14 @@ namespace Koturn.Sqlite
     public class SqliteStatement : IDisposable, ISqliteColumnAccessable
     {
         /// <summary>
+        /// Number of columns.
+        /// </summary>
+        public int ColumnCount { get; }
+        /// <summary>
+        /// Number of parameters.
+        /// </summary>
+        public int ParameterCount { get; }
+        /// <summary>
         /// A flag property which indicates this instance is disposed or not.
         /// </summary>
         public bool IsDisposed { get; private set; }
@@ -18,10 +26,6 @@ namespace Koturn.Sqlite
         /// SQLite statement handle.
         /// </summary>
         private readonly SqliteStatementHandle _stmt;
-        /// <summary>
-        /// Number of columns.
-        /// </summary>
-        private readonly int _columnCount;
         /// <summary>
         /// Dictionary of pairs of column name and column index.
         /// </summary>
@@ -74,8 +78,9 @@ namespace Koturn.Sqlite
         public SqliteStatement(SqliteStatementHandle stmt)
         {
             _stmt = stmt;
-            _columnCount = SqliteLibrary.ColumnCount(stmt);
             _nameDict = null;
+            ColumnCount = SqliteLibrary.ColumnCount(stmt);
+            ParameterCount = SqliteLibrary.BindParameterCount(stmt);
             IsDisposed = false;
         }
 
@@ -1093,6 +1098,26 @@ namespace Koturn.Sqlite
             return GetNullableBlobStrict(GetNameDict()[name]);
         }
 
+        /// <summary>
+        /// Get bind parameter index of specified parameter name.
+        /// </summary>
+        /// <param name="name">Parameter name.</param>
+        /// <returns>Bind parameter index (1-based).</returns>
+        public int ParameterIndexOf(string name)
+        {
+            return SqliteLibrary.BindParameterIndex(_stmt, name);
+        }
+
+        /// <summary>
+        /// Get bind parameter name of specified index.
+        /// </summary>
+        /// <param name="index">Parameter index (1-based).</param>
+        /// <returns>Bind parameter index.</returns>
+        public string ParameterNameAt(int index)
+        {
+            return SqliteLibrary.BindParameterName(_stmt, index);
+        }
+
 
         #region IDisposable Support
         /// <summary>
@@ -1160,7 +1185,7 @@ namespace Koturn.Sqlite
 
         private Dictionary<string, int> BuildNameDict()
         {
-            var columnCount = _columnCount;
+            var columnCount = ColumnCount;
             var nameDict = new Dictionary<string, int>(columnCount);
             for (int i = 0; i < columnCount; i++)
             {
@@ -1177,7 +1202,7 @@ namespace Koturn.Sqlite
         /// <param name="index">Index of column.</param>
         private void CheckColumnIndex(string paramName, int index)
         {
-            if (index < 0 || index >= _columnCount)
+            if (index < 0 || index >= ColumnCount)
             {
                 ThrowArgumentOutOfRangeException(paramName, index, "Column index is out of range");
             }
