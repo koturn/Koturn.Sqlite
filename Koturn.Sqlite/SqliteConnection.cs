@@ -239,16 +239,6 @@ namespace Koturn.Sqlite
         /// Execute specified SQL.
         /// </summary>
         /// <param name="sql">SQL to be evaluated.</param>
-        [Obsolete("This method uses legacy API, sqlite3_exec()")]
-        public void ExecuteNonQueryLegacy(string sql)
-        {
-            SqliteLibrary.Execute(_db, sql);
-        }
-
-        /// <summary>
-        /// Execute specified SQL.
-        /// </summary>
-        /// <param name="sql">SQL to be evaluated.</param>
         /// <param name="callback">Callback function.</param>
         public void Execute(string sql, Func<string[], string[], bool> callback)
         {
@@ -334,6 +324,16 @@ namespace Koturn.Sqlite
                 {
                 }
             }
+        }
+
+        /// <summary>
+        /// Execute specified SQL.
+        /// </summary>
+        /// <param name="sql">SQL to be evaluated.</param>
+        [Obsolete("This method uses legacy API, sqlite3_exec()")]
+        public void ExecuteNonQueryLegacy(string sql)
+        {
+            SqliteLibrary.Execute(_db, sql);
         }
 
         /// <summary>
