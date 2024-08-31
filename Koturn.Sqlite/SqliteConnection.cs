@@ -576,6 +576,80 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Get schema information from "sqlite_schema".
+        /// </summary>
+        /// <returns>Definition SQL.</returns>
+        /// <remarks>
+        /// <see href="https://www.sqlite.org/schematab.html"/>
+        /// </remarks>
+        public IEnumerable<SqliteSchemaRow> GetSchema()
+        {
+            using (var stmt = Prepare("SELECT type, name, tbl_name, rootpage, sql FROM sqlite_schema"))
+            {
+                while (stmt.Step())
+                {
+                    yield return new SqliteSchemaRow(
+                        SqliteEnumConverter.ToObjectType(stmt.GetTextUnchecked(0)),  // type
+                        stmt.GetTextUnchecked(1),  // name
+                        stmt.GetTextUnchecked(2),  // tbl_name
+                        stmt.GetIntUnchecked(3),  // rootpage
+                        stmt.GetTextUnchecked(4));  // sql
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get schema information from "sqlite_schema".
+        /// </summary>
+        /// <param name="type">Object type.</param>
+        /// <returns>Definition SQL.</returns>
+        /// <remarks>
+        /// <see href="https://www.sqlite.org/schematab.html"/>
+        /// </remarks>
+        public IEnumerable<SqliteSchemaRow> GetSchema(SqliteObjectType type)
+        {
+            using (var stmt = Prepare("SELECT type, name, tbl_name, rootpage, sql FROM sqlite_schema WHERE type = :type"))
+            {
+                stmt.Bind(1, SqliteEnumConverter.ToObjectTypeName(type));
+                while (stmt.Step())
+                {
+                    yield return new SqliteSchemaRow(
+                        SqliteEnumConverter.ToObjectType(stmt.GetTextUnchecked(0)),  // type
+                        stmt.GetTextUnchecked(1),  // name
+                        stmt.GetTextUnchecked(2),  // tbl_name
+                        stmt.GetIntUnchecked(3),  // rootpage
+                        stmt.GetTextUnchecked(4));  // sql
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get schema information from "sqlite_schema".
+        /// </summary>
+        /// <param name="name">Object name.</param>
+        /// <returns>Definition SQL.</returns>
+        /// <remarks>
+        /// <see href="https://www.sqlite.org/schematab.html"/>
+        /// </remarks>
+        public SqliteSchemaRow GetSchema(string name)
+        {
+            using (var stmt = Prepare("SELECT type, name, tbl_name, rootpage, sql FROM sqlite_schema WHERE name = :name"))
+            {
+                stmt.Bind(1, name);
+                if (!stmt.Step())
+                {
+                    throw new InvalidOperationException("No record found");
+                }
+                return new SqliteSchemaRow(
+                    SqliteEnumConverter.ToObjectType(stmt.GetTextUnchecked(0)),  // type
+                    stmt.GetTextUnchecked(1),  // name
+                    stmt.GetTextUnchecked(2),  // tbl_name
+                    stmt.GetIntUnchecked(3),  // rootpage
+                    stmt.GetTextUnchecked(4));  // sql
+            }
+        }
+
+        /// <summary>
         /// Get definition SQL of specified object.
         /// </summary>
         /// <param name="name">Object name.</param>
