@@ -2,9 +2,10 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Koturn.Sqlite.Enums;
 
 
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Handles
 {
     /// <summary>
     /// The first 100 bytes of the database file comprise the database file header.
@@ -205,8 +206,9 @@ namespace Koturn.Sqlite
             {
                 fixed (byte* pHeaderBytes = &headerBytes[0])
                 {
-                    var header = (SqliteFileHeader)Marshal.PtrToStructure((IntPtr)pHeaderBytes, typeof(SqliteFileHeader)); 
-                    if (!BitConverter.IsLittleEndian) {
+                    var header = (SqliteFileHeader)Marshal.PtrToStructure((IntPtr)pHeaderBytes, typeof(SqliteFileHeader));
+                    if (!BitConverter.IsLittleEndian)
+                    {
                         return header;
                     }
 
@@ -238,10 +240,10 @@ namespace Koturn.Sqlite
         /// <returns>Byte swapped <paramref name="n"/>.</returns>
         private static uint SwapBytes(uint n)
         {
-            return (n << 24)
-                | ((n & 0x0000ff00u) << 8)
-                | ((n & 0x00ff0000u) >> 8)
-                | (n >> 24);
+            return n << 24
+                | (n & 0x0000ff00u) << 8
+                | (n & 0x00ff0000u) >> 8
+                | n >> 24;
         }
     }
 }

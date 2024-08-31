@@ -1,4 +1,7 @@
-namespace Koturn.Sqlite
+using Koturn.Sqlite.Enums;
+
+
+namespace Koturn.Sqlite.ValueObjects
 {
     /// <summary>
     /// Result row of sqlite_schema.

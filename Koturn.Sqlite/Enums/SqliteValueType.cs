@@ -1,4 +1,4 @@
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Enums
 {
     /// <summary>
     /// Type codes of SQLite3.

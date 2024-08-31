@@ -1,3 +1,4 @@
+using Koturn.Sqlite.Enums;
 using System;
 using System.Runtime.Serialization;
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
@@ -5,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 #endif
 
 
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Exceptions
 {
     /// <summary>
     /// Exception class for some failed P/Invoke of SQLite3 calls.

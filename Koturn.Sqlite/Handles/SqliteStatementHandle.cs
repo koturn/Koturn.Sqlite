@@ -1,8 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
+using Koturn.Sqlite.Enums;
 
 
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Handles
 {
     /// <summary>
     /// SQLite3 statement handle.

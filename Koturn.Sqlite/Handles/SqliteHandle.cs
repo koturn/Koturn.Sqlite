@@ -1,18 +1,19 @@
 using System;
 using System.Runtime.InteropServices;
+using Koturn.Sqlite.Enums;
 
 
 namespace Koturn.Sqlite
 {
     /// <summary>
-    /// Handle for memory allocated in SQLite3 functions.
+    /// Handle for SQLite3 database.
     /// </summary>
-    public sealed class SqliteMemoryHandle : SafeHandle
+    public sealed class SqliteHandle : SafeHandle
     {
         /// <summary>
         /// Initialize handle with <see cref="IntPtr.Zero"/>.
         /// </summary>
-        private SqliteMemoryHandle()
+        private SqliteHandle()
             : base(IntPtr.Zero, true)
         {
         }
@@ -23,14 +24,12 @@ namespace Koturn.Sqlite
         public override bool IsInvalid => handle == IntPtr.Zero;
 
         /// <summary>
-        /// Free memory.
+        /// Close data base.
         /// </summary>
-        /// <returns>Always true.</returns>
+        /// <returns>True if closing is successful, otherwise false.</returns>
         protected override bool ReleaseHandle()
         {
-            SqliteLibrary.Free(handle);
-            handle = IntPtr.Zero;
-            return true;
+            return SqliteLibrary.Close(handle) == SqliteResult.OK;
         }
     }
 }

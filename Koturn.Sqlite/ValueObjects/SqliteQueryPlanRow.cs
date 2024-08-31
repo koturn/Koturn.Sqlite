@@ -1,4 +1,4 @@
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.ValueObjects
 {
     /// <summary>
     /// Result row of "EXPLAIN QUERY PLAN".
@@ -6,7 +6,7 @@ namespace Koturn.Sqlite
     /// <remarks>
     /// <see href="https://www.sqlite.org/eqp.html"/>
     /// </remarks>
-    public class SqliteQueryPlan
+    public class SqliteQueryPlanRow
     {
         /// <summary>
         /// Node ID.
@@ -32,7 +32,7 @@ namespace Koturn.Sqlite
         /// <param name="parent">Parent node ID.</param>
         /// <param name="notUsed">Value of "notused".</param>
         /// <param name="detail">Detail.</param>
-        public SqliteQueryPlan(int id, int parent, int notUsed, string detail)
+        public SqliteQueryPlanRow(int id, int parent, int notUsed, string detail)
         {
             Id = id;
             Parent = parent;

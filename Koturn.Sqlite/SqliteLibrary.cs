@@ -1,6 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Koturn.Sqlite.Enums;
+using Koturn.Sqlite.Exceptions;
+using Koturn.Sqlite.Handles;
 
 
 namespace Koturn.Sqlite

@@ -1,4 +1,4 @@
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.ValueObjects
 {
     /// <summary>
     /// Result row of "EXPLAIN".

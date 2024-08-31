@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -30,6 +30,13 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Handles\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Enums\" />
+    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
 </Project>

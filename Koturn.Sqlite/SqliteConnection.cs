@@ -1,4 +1,5 @@
-#define LEGACY_CSHARP
+using Koturn.Sqlite.Enums;
+using Koturn.Sqlite.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -833,14 +834,14 @@ namespace Koturn.Sqlite
         /// Execute "EXPLAIN QUERY PLAN".
         /// </summary>
         /// <param name="sql">Target query.</param>
-        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteQueryPlan"/>.</returns>
-        public IEnumerable<SqliteQueryPlan> ExplainQueryPlan(string sql)
+        /// <returns><see cref="IEnumerable{T}"/> of <see cref="SqliteQueryPlanRow"/>.</returns>
+        public IEnumerable<SqliteQueryPlanRow> ExplainQueryPlan(string sql)
         {
             using (var stmt = Prepare("EXPLAIN QUERY PLAN " + sql))
             {
                 while (stmt.Step())
                 {
-                    yield return new SqliteQueryPlan(
+                    yield return new SqliteQueryPlanRow(
                         stmt.GetIntUnchecked(0),  // id
                         stmt.GetIntUnchecked(1),  // parent
                         stmt.GetIntUnchecked(2),  // notused

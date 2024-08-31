@@ -1,4 +1,4 @@
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.ValueObjects
 {
     /// <summary>
     /// Result row of pragma_table_xinfo('xxx') or PRAGMA table_xinfo('xxx').

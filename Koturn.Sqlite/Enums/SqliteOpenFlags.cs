@@ -1,6 +1,6 @@
 using System;
 
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Enums
 {
     /// <summary>
     /// Open flags.

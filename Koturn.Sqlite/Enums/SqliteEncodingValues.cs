@@ -1,4 +1,4 @@
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Enums
 {
     /// <summary>
     /// SQLite3 text encoding values.
@@ -31,6 +31,6 @@ namespace Koturn.Sqlite
         /// <summary>
         /// sqlite3_create_collation only.
         /// </summary>
-        Utf16Aligned =8
+        Utf16Aligned = 8
     }
 }

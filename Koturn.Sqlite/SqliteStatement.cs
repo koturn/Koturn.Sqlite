@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Koturn.Sqlite.Enums;
+using Koturn.Sqlite.Exceptions;
+using Koturn.Sqlite.Handles;
 
 
 namespace Koturn.Sqlite

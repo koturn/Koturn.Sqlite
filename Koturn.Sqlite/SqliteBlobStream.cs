@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Koturn.Sqlite.Enums;
 
 
 namespace Koturn.Sqlite

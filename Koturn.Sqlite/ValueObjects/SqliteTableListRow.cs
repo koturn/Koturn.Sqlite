@@ -1,4 +1,7 @@
-namespace Koturn.Sqlite
+using Koturn.Sqlite.Enums;
+
+
+namespace Koturn.Sqlite.ValueObjects
 {
     /// <summary>
     /// Result row of pragma_table_info('xxx') or PRAGMA table_info('xxx').

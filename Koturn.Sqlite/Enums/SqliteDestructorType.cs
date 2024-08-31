@@ -1,4 +1,4 @@
-namespace Koturn.Sqlite
+namespace Koturn.Sqlite.Enums
 {
     /// <summary>
     /// Constants Defining Special Destructor Behavior.
