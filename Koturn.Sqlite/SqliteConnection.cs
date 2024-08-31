@@ -520,6 +520,9 @@ namespace Koturn.Sqlite
         /// <param name="typeName">Schema type.</param>
         /// <param name="name">Object name.</param>
         /// <returns>True if specified object exists, otherwise false.</returns>
+        /// <remarks>
+        /// <see href="https://www.sqlite.org/schematab.html"/>
+        /// </remarks>
         public bool IsExists(string typeName, string name)
         {
             // sqlite_master is legacy table, sqlite_schema is preferred.
