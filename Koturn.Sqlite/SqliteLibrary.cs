@@ -1526,7 +1526,7 @@ namespace Koturn.Sqlite
         /// <param name="db">SQLite db handle.</param>
         /// <param name="callback">Callback function.</param>
         /// <param name="callbackArg">First argument to callback.</param>
-        public static void BusyHandler(SqliteHandle db, BusyCallbackFunc callback, IntPtr callbackArg)
+        public static void BusyHandler(SqliteHandle db, BusyCallbackFunc callback, IntPtr callbackArg = default(IntPtr))
         {
             var result = _busyHandler(db, callback, callbackArg);
             SqliteException.ThrowIfFailed("sqlite3_busy_handler", result);
