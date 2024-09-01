@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Koturn.Sqlite.Enums;
 using Koturn.Sqlite.Exceptions;
 using Koturn.Sqlite.Handles;
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 
 namespace Koturn.Sqlite
@@ -30,9 +33,13 @@ namespace Koturn.Sqlite
         /// </summary>
         private readonly SqliteStatementHandle _stmt;
         /// <summary>
+        /// Dictionary of pairs of parameter name and parameter index.
+        /// </summary>
+        private Dictionary<string, int> _parameterNameDict;
+        /// <summary>
         /// Dictionary of pairs of column name and column index.
         /// </summary>
-        private Dictionary<string, int> _nameDict;
+        private Dictionary<string, int> _columnNameDict;
         /// <summary>
         /// Cache of <see cref="SqliteLibrary.Sql"/>.
         /// </summary>
@@ -81,7 +88,8 @@ namespace Koturn.Sqlite
         public SqliteStatement(SqliteStatementHandle stmt)
         {
             _stmt = stmt;
-            _nameDict = null;
+            _parameterNameDict = null;
+            _columnNameDict = null;
             ColumnCount = SqliteLibrary.ColumnCount(stmt);
             ParameterCount = SqliteLibrary.BindParameterCount(stmt);
             IsDisposed = false;
@@ -130,7 +138,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, int val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -140,7 +148,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, int? val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -177,7 +185,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, long val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -187,7 +195,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, long? val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -224,7 +232,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, double val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -234,7 +242,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, double? val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -261,7 +269,7 @@ namespace Koturn.Sqlite
         /// <param name="val">Value to bind.</param>
         public void Bind(string name, string val)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), val);
+            Bind(GetParameterNameDict()[name], val);
         }
 
         /// <summary>
@@ -288,7 +296,7 @@ namespace Koturn.Sqlite
         /// <param name="blob">BLOB data to bind.</param>
         public void Bind(string name, byte[] blob)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), blob);
+            Bind(GetParameterNameDict()[name], blob);
         }
 
         /// <summary>
@@ -319,7 +327,7 @@ namespace Koturn.Sqlite
         /// <param name="length">Length of BLOB data.</param>
         public void Bind(string name, byte[] blob, int offset, int length)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), blob, offset, length);
+            Bind(GetParameterNameDict()[name], blob, offset, length);
         }
 
         /// <summary>
@@ -350,7 +358,7 @@ namespace Koturn.Sqlite
         /// <param name="length">Length of BLOB data.</param>
         public void Bind(string name, byte[] blob, ulong offset, ulong length)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), blob, offset, length);
+            Bind(GetParameterNameDict()[name], blob, offset, length);
         }
 
         /// <summary>
@@ -381,7 +389,7 @@ namespace Koturn.Sqlite
         /// <param name="dtorType">Special destructor for BLOB data.</param>
         public void Bind(string name, IntPtr pBlob, int length, SqliteDestructorType dtorType = SqliteDestructorType.Transient)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), pBlob, length, dtorType);
+            Bind(GetParameterNameDict()[name], pBlob, length, dtorType);
         }
 
         /// <summary>
@@ -412,7 +420,7 @@ namespace Koturn.Sqlite
         /// <param name="dtorType">Special destructor for BLOB data.</param>
         public void Bind(string name, IntPtr pBlob, ulong length, SqliteDestructorType dtorType = SqliteDestructorType.Transient)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), pBlob, length, dtorType);
+            Bind(GetParameterNameDict()[name], pBlob, length, dtorType);
         }
 
         /// <summary>
@@ -432,7 +440,7 @@ namespace Koturn.Sqlite
         /// <param name="_">NULL value (not used).</param>
         public void Bind(string name, DBNull _)
         {
-            BindNull(SqliteLibrary.BindParameterIndex(_stmt, name));
+            BindNull(GetParameterNameDict()[name]);
         }
 
         /// <summary>
@@ -496,7 +504,7 @@ namespace Koturn.Sqlite
         /// <param name="obj">An object to bind.</param>
         public void Bind(string name, object obj)
         {
-            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), obj);
+            Bind(GetParameterNameDict()[name], obj);
         }
 
         /// <summary>
@@ -516,7 +524,7 @@ namespace Koturn.Sqlite
         /// <param name="length">Byte lenght of BLOB data which is filled with zeros.</param>
         public void BindZeroBlob(string name, int length)
         {
-            BindZeroBlob(SqliteLibrary.BindParameterIndex(_stmt, name), length);
+            BindZeroBlob(GetParameterNameDict()[name], length);
         }
 
         /// <summary>
@@ -536,7 +544,7 @@ namespace Koturn.Sqlite
         /// <param name="length">Byte lenght of BLOB data which is filled with zeros.</param>
         public void BindZeroBlob(string name, ulong length)
         {
-            BindZeroBlob(SqliteLibrary.BindParameterIndex(_stmt, name), length);
+            BindZeroBlob(GetParameterNameDict()[name], length);
         }
 
         /// <summary>
@@ -554,7 +562,7 @@ namespace Koturn.Sqlite
         /// <param name="name">Name of parameter.</param>
         public void BindNull(string name)
         {
-            BindNull(SqliteLibrary.BindParameterIndex(_stmt, name));
+            BindNull(GetParameterNameDict()[name]);
         }
 
         /// <summary>
@@ -600,7 +608,7 @@ namespace Koturn.Sqlite
         /// <returns>Result object.</returns>
         public object Get(string name)
         {
-            return Get(GetNameDict()[name]);
+            return Get(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -634,7 +642,7 @@ namespace Koturn.Sqlite
         /// <returns>Result object.</returns>
         public object Get<T>(string name)
         {
-            return Get<T>(GetNameDict()[name]);
+            return Get<T>(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -665,7 +673,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="int"/>.</returns>
         public int GetInt(string name)
         {
-            return GetIntUnchecked(GetNameDict()[name]);
+            return GetIntUnchecked(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -697,7 +705,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="int"/> if column value is not NULL, otherwise null.</returns>
         public int? GetNullableInt(string name)
         {
-            return GetNullableInt(GetNameDict()[name]);
+            return GetNullableInt(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -724,7 +732,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="int"/>.</returns>
         public int GetIntStrict(string name)
         {
-            return GetIntStrict(GetNameDict()[name]);
+            return GetIntStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -756,7 +764,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="int"/>.</returns>
         public int? GetNullableIntStrict(string name)
         {
-            return GetNullableIntStrict(GetNameDict()[name]);
+            return GetNullableIntStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -787,7 +795,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="long"/>.</returns>
         public long GetInt64(string name)
         {
-            return GetInt64(GetNameDict()[name]);
+            return GetInt64(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -819,7 +827,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="long"/> if column value is not NULL, otherwise null.</returns>
         public long? GetNullableInt64(string name)
         {
-            return GetNullableInt64(GetNameDict()[name]);
+            return GetNullableInt64(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -846,7 +854,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="long"/>.</returns>
         public long GetInt64Strict(string name)
         {
-            return GetInt64Strict(GetNameDict()[name]);
+            return GetInt64Strict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -878,7 +886,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="long"/>.</returns>
         public long? GetNullableInt64Strict(string name)
         {
-            return GetNullableInt64Strict(GetNameDict()[name]);
+            return GetNullableInt64Strict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -909,7 +917,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="double"/>.</returns>
         public double GetDouble(string name)
         {
-            return GetDouble(GetNameDict()[name]);
+            return GetDouble(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -941,7 +949,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="double"/> if column value is not NULL, otherwise null.</returns>
         public double? GetNullableDouble(string name)
         {
-            return GetNullableDouble(GetNameDict()[name]);
+            return GetNullableDouble(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -968,7 +976,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="double"/>.</returns>
         public double GetDoubleStrict(string name)
         {
-            return GetDoubleStrict(GetNameDict()[name]);
+            return GetDoubleStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1000,7 +1008,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="double"/>.</returns>
         public double? GetNullableDoubleStrict(string name)
         {
-            return GetNullableDoubleStrict(GetNameDict()[name]);
+            return GetNullableDoubleStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1032,7 +1040,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="string"/> if column value is not NULL, otherwise null.</returns>
         public string GetText(string name)
         {
-            return GetText(GetNameDict()[name]);
+            return GetText(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1059,7 +1067,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="string"/>.</returns>
         public string GetTextStrict(string name)
         {
-            return GetTextStrict(GetNameDict()[name]);
+            return GetTextStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1091,7 +1099,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="string"/>.</returns>
         public string GetNullableTextStrict(string name)
         {
-            return GetNullableTextStrict(GetNameDict()[name]);
+            return GetNullableTextStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1123,7 +1131,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="byte"/> array of BLOB if column value is not NULL or has non-zero length, otherwise null.</returns>
         public byte[] GetBlob(string name)
         {
-            return GetBlob(GetNameDict()[name]);
+            return GetBlob(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1150,7 +1158,7 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="byte"/> array of BLOB.</returns>
         public byte[] GetBlobStrict(string name)
         {
-            return GetBlobStrict(GetNameDict()[name]);
+            return GetBlobStrict(GetColumnNameDict()[name]);
         }
 
         /// <summary>
@@ -1182,7 +1190,27 @@ namespace Koturn.Sqlite
         /// <returns>Column value as <see cref="byte"/> array of BLOB.</returns>
         public byte[] GetNullableBlobStrict(string name)
         {
-            return GetNullableBlobStrict(GetNameDict()[name]);
+            return GetNullableBlobStrict(GetColumnNameDict()[name]);
+        }
+
+        /// <summary>
+        /// Get column index of specified parameter name.
+        /// </summary>
+        /// <param name="name">Column name.</param>
+        /// <returns>Column index (0-based).</returns>
+        public int ColumnIndexOf(string name)
+        {
+            return GetColumnNameDict()[name];
+        }
+
+        /// <summary>
+        /// Get column name of specified index.
+        /// </summary>
+        /// <param name="index">Index of column (0-based).</param>
+        /// <returns>Column name.</returns>
+        public string ColumnNameAt(int index)
+        {
+            return SqliteLibrary.ColumnName(_stmt, index);
         }
 
         /// <summary>
@@ -1192,7 +1220,7 @@ namespace Koturn.Sqlite
         /// <returns>Bind parameter index (1-based).</returns>
         public int ParameterIndexOf(string name)
         {
-            return SqliteLibrary.BindParameterIndex(_stmt, name);
+            return GetParameterNameDict()[name];
         }
 
         /// <summary>
@@ -1260,23 +1288,63 @@ namespace Koturn.Sqlite
         }
 #endif
 
-
-        private Dictionary<string, int> GetNameDict()
+        /// <summary>
+        /// <para>Get cache of parameter name/index dictionary.</para>
+        /// <para>If the cache is not exists, create it.</para>
+        /// </summary>
+        /// <returns>Parameter name/index dictionary. (<see cref="_parameterNameDict"/>)</returns>
+        private Dictionary<string, int> GetParameterNameDict()
         {
-            if (_nameDict == null)
+            if (_parameterNameDict == null)
             {
-                return _nameDict = BuildNameDict();
+                return _parameterNameDict = BuildParameterNameDict();
             }
-            return _nameDict;
+            return _parameterNameDict;
         }
 
-        private Dictionary<string, int> BuildNameDict()
+        /// <summary>
+        /// Build parameter name/index dictionary.
+        /// </summary>
+        /// <returns>Parameter name/index dictionary.</returns>
+        private Dictionary<string, int> BuildParameterNameDict()
+        {
+            var parameterCount = ParameterCount;
+            var stmt = _stmt;
+            var nameDict = new Dictionary<string, int>(parameterCount);
+            for (int i = 1; i <= parameterCount; i++)
+            {
+                nameDict[SqliteLibrary.BindParameterName(stmt, i)] = i;
+            }
+
+            return nameDict;
+        }
+
+        /// <summary>
+        /// <para>Get cache of column name/index dictionary.</para>
+        /// <para>If the cache is not exists, create it.</para>
+        /// </summary>
+        /// <returns>Column name/index dictionary. (<see cref="_columnNameDict"/>)</returns>
+        private Dictionary<string, int> GetColumnNameDict()
+        {
+            if (_columnNameDict == null)
+            {
+                return _columnNameDict = BuildColumnNameDict();
+            }
+            return _columnNameDict;
+        }
+
+        /// <summary>
+        /// Build column name/index dictionary.
+        /// </summary>
+        /// <returns>Column name/index dictionary.</returns>
+        private Dictionary<string, int> BuildColumnNameDict()
         {
             var columnCount = ColumnCount;
+            var stmt = _stmt;
             var nameDict = new Dictionary<string, int>(columnCount);
             for (int i = 0; i < columnCount; i++)
             {
-                nameDict[SqliteLibrary.ColumnName(_stmt, i)] = i;
+                nameDict[SqliteLibrary.ColumnName(stmt, i)] = i;
             }
 
             return nameDict;
@@ -1303,6 +1371,9 @@ namespace Koturn.Sqlite
         /// <param name="actualValue">Actual value.</param>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException">Always thrown.</exception>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
+        [DoesNotReturn]
+#endif
         private static void ThrowArgumentOutOfRangeException<T>(string paramName, T actualValue, string message)
         {
             throw new ArgumentOutOfRangeException(paramName, actualValue, message);
