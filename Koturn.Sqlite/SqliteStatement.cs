@@ -416,6 +416,90 @@ namespace Koturn.Sqlite
         }
 
         /// <summary>
+        /// Bind NULL to prepared statement.
+        /// </summary>
+        /// <param name="index">Index of parameter (1-based).</param>
+        /// <param name="_">NULL value (not used).</param>
+        public void Bind(int index, DBNull _)
+        {
+            BindNull(index);
+        }
+
+        /// <summary>
+        /// Bind NULL to prepared statement.
+        /// </summary>
+        /// <param name="name">Name of parameter.</param>
+        /// <param name="_">NULL value (not used).</param>
+        public void Bind(string name, DBNull _)
+        {
+            BindNull(SqliteLibrary.BindParameterIndex(_stmt, name));
+        }
+
+        /// <summary>
+        /// Bind any data to prepared statement.
+        /// </summary>
+        /// <param name="index">Index of parameter (1-based).</param>
+        /// <param name="obj">An object to bind.</param>
+        public void Bind(int index, object obj)
+        {
+            var t = obj.GetType();
+            if (t == typeof(short))
+            {
+                Bind(index, (int)(short)obj);
+            }
+            else if (t == typeof(ushort))
+            {
+                Bind(index, (int)(ushort)obj);
+            }
+            else if (t == typeof(int))
+            {
+                Bind(index, (int)obj);
+            }
+            else if (t == typeof(uint))
+            {
+                Bind(index, (long)(uint)obj);
+            }
+            else if (t == typeof(long))
+            {
+                Bind(index, (long)obj);
+            }
+            else if (t == typeof(ulong))
+            {
+                Bind(index, (long)obj);
+            }
+            else if (t == typeof(float))
+            {
+                Bind(index, (double)(float)obj);
+            }
+            else if (t == typeof(double))
+            {
+                Bind(index, (double)obj);
+            }
+            else if (t == typeof(byte[]))
+            {
+                Bind(index, (byte[])obj);
+            }
+            else if (t == typeof(string))
+            {
+                Bind(index, (string)obj);
+            }
+            else
+            {
+                throw new NotSupportedException("Not supported type: " + t.Name);
+            }
+        }
+
+        /// <summary>
+        /// Bind any data to prepared statement.
+        /// </summary>
+        /// <param name="name">Name of parameter.</param>
+        /// <param name="obj">An object to bind.</param>
+        public void Bind(string name, object obj)
+        {
+            Bind(SqliteLibrary.BindParameterIndex(_stmt, name), obj);
+        }
+
+        /// <summary>
         /// Bind BLOB data to prepared statement.
         /// </summary>
         /// <param name="index">Index of parameter (1-based).</param>
