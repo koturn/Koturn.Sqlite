@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Koturn.Sqlite.Enums;
 using Koturn.Sqlite.Exceptions;
 using Koturn.Sqlite.Handles;
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
-using System.Diagnostics.CodeAnalysis;
-#endif
 
 
 namespace Koturn.Sqlite
@@ -1371,9 +1369,7 @@ namespace Koturn.Sqlite
         /// <param name="actualValue">Actual value.</param>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <exception cref="ArgumentOutOfRangeException">Always thrown.</exception>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
         [DoesNotReturn]
-#endif
         private static void ThrowArgumentOutOfRangeException<T>(string paramName, T actualValue, string message)
         {
             throw new ArgumentOutOfRangeException(paramName, actualValue, message);

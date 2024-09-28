@@ -1,9 +1,7 @@
 using Koturn.Sqlite.Enums;
 using System;
-using System.Runtime.Serialization;
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
-#endif
+using System.Runtime.Serialization;
 
 
 namespace Koturn.Sqlite.Exceptions
@@ -100,9 +98,7 @@ namespace Koturn.Sqlite.Exceptions
         /// <param name="actualType">Actual type of value.</param>
         /// <param name="index">Index of column.</param>
         /// <exception cref="SqliteTypeException">Always thrown.</exception>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
         [DoesNotReturn]
-#endif
         public static void Throw(SqliteValueType expectedType, SqliteValueType actualType, int index)
         {
             throw new SqliteTypeException(expectedType, actualType, index);
@@ -115,9 +111,7 @@ namespace Koturn.Sqlite.Exceptions
         /// <param name="actualType">Actual type of value.</param>
         /// <param name="name">Name of column.</param>
         /// <exception cref="SqliteTypeException">Always thrown.</exception>
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER
         [DoesNotReturn]
-#endif
         public static void Throw(SqliteValueType expectedType, SqliteValueType actualType, string name)
         {
             throw new SqliteTypeException(expectedType, actualType, name);
