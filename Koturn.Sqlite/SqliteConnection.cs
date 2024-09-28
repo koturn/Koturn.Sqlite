@@ -1,8 +1,11 @@
-using Koturn.Sqlite.Enums;
-using Koturn.Sqlite.ValueObjects;
 using System;
 using System.Collections.Generic;
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP1_1_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
 using System.Text;
+using Koturn.Sqlite.Enums;
+using Koturn.Sqlite.ValueObjects;
 
 
 namespace Koturn.Sqlite

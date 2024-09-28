@@ -1600,7 +1600,7 @@ namespace Koturn.Sqlite
         private static unsafe string PtrToStringUTF8(sbyte *psb)
         {
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP1_1_OR_GREATER
-            return Marshal.PtrToStringUTF8((IntPtr)p);
+            return Marshal.PtrToStringUTF8((IntPtr)psb);
 #else
             return new string(psb, 0, ByteLengthOf(psb), Encoding.UTF8);
 #endif
